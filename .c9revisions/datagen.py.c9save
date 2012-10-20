@@ -1,0 +1,18 @@
+{"ts":1350754538507,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
+{"contributors":[],"silentsave":false,"ts":1350754735806,"patch":[[{"diffs":[[1,"# Write some file here to generate a dataset from govtrack.us api\n\nimport httplib;\n\nhttp://www.govtrack.us/api/v1/bill?congress=112&order_by=-current_status_date"]],"start1":0,"start2":0,"length1":0,"length2":161}]],"length":161,"saved":false}
+{"ts":1350754736320,"patch":[[{"diffs":[[0,"plib"],[-1,";"],[0,"\n\nht"]],"start1":77,"start2":77,"length1":9,"length2":8}]],"length":160,"saved":false}
+{"ts":1350755082955,"patch":[[{"diffs":[[0,"ib\n\n"],[-1,"http://www.govtrack.us/api/v1/bill?congress=112&order_by=-current_status_date"],[1,"conn = httplib.HTTPConnection('http://www.govtrack.us')\n"]],"start1":79,"start2":79,"length1":81,"length2":60}]],"length":139,"saved":false}
+{"ts":1350755170543,"patch":[[{"diffs":[[0,"ck.us')\n"],[1,"conn.request('GET', '/api/v1/bill?congress=112&order_by=-current_status_date');\nr1 = conn.getresponse()\n\n"]],"start1":131,"start2":131,"length1":8,"length2":113}]],"length":244,"saved":false}
+{"ts":1350755173607,"patch":[[{"diffs":[[0,"te')"],[-1,";"],[0,"\nr1 "]],"start1":213,"start2":213,"length1":9,"length2":8}]],"length":243,"saved":false}
+{"ts":1350755191216,"patch":[[{"diffs":[[0,"onse()\n\n"],[1,"print r1.status\n\n"]],"start1":235,"start2":235,"length1":8,"length2":25}]],"length":260,"saved":false}
+{"ts":1350755233965,"patch":[[{"diffs":[[0,"on('"],[-1,"http://"],[0,"www."]],"start1":110,"start2":110,"length1":15,"length2":8}]],"length":253,"saved":false}
+{"ts":1350755244535,"patch":[[{"diffs":[[0,"rint r1."],[-1,"status"],[1,"read()"],[0,"\n\n"]],"start1":237,"start2":237,"length1":16,"length2":16}]],"length":253,"saved":false}
+{"ts":1350755258312,"patch":[[{"diffs":[[0," r1.read"],[1,"lines"],[0,"()\n\n"]],"start1":241,"start2":241,"length1":12,"length2":17}]],"length":258,"saved":false}
+{"ts":1350755260178,"patch":[[{"diffs":[[0,"dlines()"],[1,"[0]"],[0,"\n\n"]],"start1":248,"start2":248,"length1":10,"length2":13}]],"length":261,"saved":false}
+{"ts":1350755280628,"patch":[[{"diffs":[[0,".rea"],[-1,"dlines()[0]"],[1,"son"],[0,"\n\n"]],"start1":244,"start2":244,"length1":17,"length2":9}]],"length":253,"saved":false}
+{"ts":1350755407450,"patch":[[{"diffs":[[0,"bill"],[-1,"?congress=112&order_by=-current_status_date"],[1,"/74369/"],[0,"')\nr"]],"start1":161,"start2":161,"length1":51,"length2":15}]],"length":217,"saved":false}
+{"ts":1350755418121,"patch":[[{"diffs":[[0,"1.reason"],[1,"\nprint r1.read()"],[0,"\n\n"]],"start1":207,"start2":207,"length1":10,"length2":26}]],"length":233,"saved":false}
+{"ts":1350755457010,"patch":[[{"diffs":[[0,"ill/"],[-1,"74369/"],[1,"?congress=112&order_by=-current_status_date"],[0,"')\nr"]],"start1":162,"start2":162,"length1":14,"length2":51}]],"length":270,"saved":false}
+{"ts":1350755605906,"patch":[[{"diffs":[[0," httplib"],[1,", json"],[0,"\n\nconn ="]],"start1":73,"start2":73,"length1":16,"length2":22}]],"length":276,"saved":false}
+{"ts":1350755632866,"patch":[[{"diffs":[[0,"son\n"],[-1,"print r1.read()"],[1,"bills = json.loads(r1.read())[\"objects\"]\nprint bills"],[0,"\n\n"]],"start1":255,"start2":255,"length1":21,"length2":58}]],"length":313,"saved":false}
+{"ts":1350755659287,"patch":[[{"diffs":[[0,"]\nprint "],[1,"json.dumps("],[0,"bills"],[1,")"],[0,"\n\n"]],"start1":298,"start2":298,"length1":15,"length2":27}]],"length":325,"saved":false}
