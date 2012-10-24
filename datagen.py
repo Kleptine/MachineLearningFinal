@@ -9,4 +9,3 @@ r1 = conn.getresponse()
 print r1.reason
 bills = json.loads(r1.read())["objects"]
 print json.dumps(bills)
-
