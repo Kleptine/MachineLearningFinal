@@ -38,8 +38,6 @@ def getPeople():
 #the highest bill  id returned is 6578 - there are missing ids though which explains the limit of 1000/5000 working?: 
 #by     http://www.govtrack.us/api/v1/bill/?limit=1000&congress=112&order_by=-introduced_date 
 
-#haven't written al files yet, had an error 
-
 #setting a high limit should get all acc to documentation, but fails at limit=12000 (11000 works)
 #puts the list of votes by this person in a file (temp)
 def getVotes (person= None):
