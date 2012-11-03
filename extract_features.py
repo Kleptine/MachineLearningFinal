@@ -24,9 +24,9 @@ def getPeople():
     people= json.loads(r.read())["objects"] 
     #print people
     for person in people:
-        print person["id"]
+        idnum= int(person["id"])
+        print idnum
         getVotes(person["id"])
-
 
 
 #Getting bills also fails when limit is above 6000 (5000 works) which makes me think this may not be an issue with
@@ -43,16 +43,16 @@ def getPeople():
 def getVotes (person= None):
     global dict
     conn = httplib.HTTPConnection('www.govtrack.us')
-    conn.request('GET', '/api/v1/vote_voter/?person='+person+'&congress=112&limit=11000&order_by=-created')
+    conn.request('GET', '/api/v1/vote_voter/?person='+person+'&congress=112&limit='+str(11000)+'&order_by=-created')
     r1 = conn.getresponse()
-    
-    print r1.reason
+    #print r1.reason
     #bills = json.loads(r1.read())
     bills = json.loads(r1.read())["objects"]
     for bill in bills:
         dict[person]=bill["link"] #TODO store tuple of (id of bill extracted from link , option)
     f= open("votes"+person+".txt",'w')
     f.write(json.dumps(bills))
+    
     #pprint (json.dumps(bills))
     
     
