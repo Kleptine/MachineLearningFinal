@@ -27,7 +27,7 @@ def getPeople():
         print person["id"]
         getVotes(person["id"])
 
-# Returns a list of current representative IDs
+# Writes JSON object of rep IDs and rep dicts to representatives
 def getReps():
     votes = []
     conn = httplib.HTTPConnection('www.govtrack.us')
@@ -40,14 +40,14 @@ def getReps():
         if result != None:
             votes = votes + result
     reps = []
-    count = 0
     for i in votes:
         role = i['current_role']
         if role != None:
             if role['role_type'] == 'representative':
-                count = count + 1
-                reps.append(i['id'])
-    return reps
+                reps.append((i['id'], i))
+    repsD = dict(reps)
+    f = open('representatives','w')
+    f.write(json.dumps(repsD))
 
 #Getting bills also fails when limit is above 6000 (5000 works) which makes me think this may not be an issue with
 # large size of data coz one api call(votes) fails at 12000 and the other(bills) at 6000. (jisha)
