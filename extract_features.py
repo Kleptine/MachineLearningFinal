@@ -3,7 +3,7 @@
 
 import httplib, json
 from pprint import pprint
-dict={}
+dictj={}
 
 
 def extractFeatures(bill):
@@ -48,6 +48,7 @@ def getReps():
     repsD = dict(reps)
     f = open('representatives','w')
     f.write(json.dumps(repsD))
+    f.close()
 
 #Getting bills also fails when limit is above 6000 (5000 works) which makes me think this may not be an issue with
 # large size of data coz one api call(votes) fails at 12000 and the other(bills) at 6000. (jisha)
@@ -70,7 +71,9 @@ def getVotes (person= None):
     #bills = json.loads(r1.read())
     bills = json.loads(r1.read())["objects"]
     for bill in bills:
-        dict[person]=bill["link"] #TODO store tuple of (id of bill extracted from link , option)
+        dictj[person]=bill["link"] #TODO store tuple of (id of bill extracted from link , option)
     f= open("votes"+person+".txt",'w')
     f.write(json.dumps(bills))
     #pprint (json.dumps(bills))
+    
+getReps()
