@@ -1,3 +1,4 @@
+
 #
 #   Extract features from a given bill object
 import httplib, json
@@ -29,6 +30,29 @@ def getPeople():
     for person in people:
         print person["id"]
         getVotes(person["id"])
+        
+# Writes JSON object of rep IDs and rep dicts to representatives
+def getReps2():
+    votes = []
+    conn = httplib.HTTPConnection('www.govtrack.us')
+    for i in range(0,7):
+        print i
+        conn.request('GET', '/api/v1/person/?limit=2000&offset=' + str(i*2000))
+        r2 = conn.getresponse()
+        print r2.reason
+        result = list(json.loads(r2.read())["objects"])
+        if result != None:
+            votes = votes + result
+    reps = []
+    for i in votes:
+        role = i['current_role']
+        if role != None:
+            if role['role_type'] == 'representative':
+                reps.append((i['id'], i))
+    repsD = dict(reps)
+    f = open('representatives','w')
+    f.write(json.dumps(repsD))
+    f.close()
 
 # Returns a list of current representative IDs
 def getReps():
