@@ -1,10 +1,11 @@
 # Write some file here to generate a dataset from govtrack.us api
-import httplib, json
+import httplib, json, glob
 
 import sys
 from pprint import pprint
-dictj={}
-reps=[]
+
+oldest_congress = 0
+limit = 1000
 
 #get all representatives, high limit gets all - verified (jisha) 
 #not used currently 
@@ -70,13 +71,6 @@ def getReps():
                 reps.append(i['id'])
     return reps
 
-def getAllVotes():
-    global reps
-    reps= getReps()
-    print reps
-    for rep in reps:
-        getVotes(rep)
-
 #Getting bills also fails when limit is above 6000 (5000 works) which makes me think this may not be an issue with
 # large size of data coz one api call(votes) fails at 12000 and the other(bills) at 6000. (jisha)
 
@@ -115,3 +109,87 @@ def getVotes (person= None):
              ft.write(text)
     f= open("votes"+person+".txt",'w')
     f.write(json.dumps(allvotes))
+
+
+
+def write_bills():
+
+    conn = httplib.HTTPConnection('www.govtrack.us')
+    
+
+    # Get all votes on bills voted on for passage:
+    conn.request('GET', '/api/v1/vote/?category=passage&limit='+str(limit))
+
+    votePull = json.loads(conn.getresponse().read())
+
+    allBills = []
+
+    for v in votePull['objects']:
+        allBills.append(v['related_bill'])
+
+    while(votePull['meta']['next'] != None):
+        conn.request('GET', votePull['meta']['next'])
+        votePull = json.loads(conn.getresponse().read())
+
+        for v in votePull['objects']:
+            allBills.append(v['related_bill'])
+
+
+        print str(len(allBills)) + '/' + str(votePull['meta']['total_count'])
+
+    print 'generating bill map...'
+    bill_map = {}
+    for bill in allBills:
+        if bill != None: # Some votes don't have associated bills because they're old and forgotten
+            bill_map[bill['id']] = bill
+
+    f = open('bills', 'w')
+    f.write(json.dumps(bill_map))
+    f.close()
+
+    split_bills()
+
+    f = open('bills', 'w')
+    f.write(json.dumps(bill_map))
+    f.close()
+
+''' Splits bills file into parts for quick loading '''
+def split_bills():
+    print 'loading bills..'
+    bills = json.loads(open('bills').read())
+
+    print 'done.'
+
+    for billid in bills:
+        f = open('bill_map/'+str(billid), 'w')
+        f.write(json.dumps(bills[billid]))
+        f.close()
+
+def generate_votes_per_rep():
+    people = json.loads(open('representatives').read())
+
+    conn = httplib.HTTPConnection('www.govtrack.us')
+
+    billMap = {}
+
+    for rep_id in sorted(people.keys())[202:]:
+        print rep_id
+        # Get all of rep's votes:
+        conn.request('GET', '/api/v1/vote_voter/?person='+str(rep_id)+'&limit='+str(limit)+'&vote__congress__gte='+str(oldest_congress)+'&vote__category=passage')
+        
+        votePull = json.loads(conn.getresponse().read())
+        allVotes = votePull['objects']
+
+        while(votePull['meta']['next'] != None):
+            conn.request('GET', votePull['meta']['next'])
+            votePull = json.loads(conn.getresponse().read())
+
+            allVotes.extend(votePull['objects'])
+
+            print str(len(allVotes)) + '/' + str(votePull['meta']['total_count'])
+
+        f = open('rep_votes_map/'+str(rep_id),'w')
+        f.write(json.dumps(allVotes))
+        f.close()
+
+generate_votes_per_rep()
