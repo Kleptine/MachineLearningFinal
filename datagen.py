@@ -165,6 +165,28 @@ def split_bills():
         f.write(json.dumps(bills[billid]))
         f.close()
 
+def build_vote_id_map():
+    people = json.loads(open('representatives').read())
+    conn = httplib.HTTPConnection('www.govtrack.us')
+
+    vote_id_map = {}
+
+    for rep_id in sorted(people.keys()):
+        print
+        print rep_id
+        votes = json.loads(open('rep_votes_map/'+str(rep_id)).read())
+        
+        for i, vote in enumerate(votes):
+            print str(i)+'/'+str(len(votes))
+            if vote['vote'] not in vote_id_map:
+                conn.request('GET', vote['vote'])
+                vote_id_map[vote['vote']] = json.loads(conn.getresponse().read())['related_bill']['id']
+
+    f = open('vote_bill_map','w')
+    f.write(json.dumps(vote_id_map))
+    f.close()
+
+
 def generate_votes_per_rep():
     people = json.loads(open('representatives').read())
 
@@ -172,7 +194,7 @@ def generate_votes_per_rep():
 
     billMap = {}
 
-    for rep_id in sorted(people.keys())[202:]:
+    for rep_id in sorted(people.keys()):
         print rep_id
         # Get all of rep's votes:
         conn.request('GET', '/api/v1/vote_voter/?person='+str(rep_id)+'&limit='+str(limit)+'&vote__congress__gte='+str(oldest_congress)+'&vote__category=passage')
@@ -192,4 +214,4 @@ def generate_votes_per_rep():
         f.write(json.dumps(allVotes))
         f.close()
 
-generate_votes_per_rep()
+build_vote_id_map()
