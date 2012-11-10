@@ -45,9 +45,9 @@ def extractFeatures(bill):
 
     features = {
         'sponsor_name': clean_name,
-        'sponsor_name_first': bill['sponsor']['firstname'],
-        'sponsor_name_middle': bill['sponsor']['middlename'],
-        'sponsor_name_last': bill['sponsor']['lastname'],
+        #'sponsor_name_first': bill['sponsor']['firstname'],
+        #'sponsor_name_middle': bill['sponsor']['middlename'],
+        #'sponsor_name_last': bill['sponsor']['lastname'],
         'vote_year': int(bill['current_status_date'][0:4]),
         'vote_month': int(bill['current_status_date'][5:7]),
         'vote_day': int(bill['current_status_date'][9:]),
@@ -62,8 +62,6 @@ def extractFeatures(bill):
         'sponsor_is_alive': sponsor_is_alive,
         'sponsor_has_nickname': sponsor_has_nickname,
         'congress': congress
-
-
     }
 
 
