@@ -5,20 +5,25 @@ def extractVotes(repId):
     outList = []
     f = open('rep_votes_map/' + str(repId),'r')
     votes = json.loads(f.read())
-    print len(votes)
-    conn = httplib.HTTPConnection('www.govtrack.us')
-    bill_map = open('vote_bill_map', 'r')
-    bmapping = json.loads(bill_map)
     f.close()
+    billMap = json.loads((open('vote_bill_map')).read())
     for vote in votes:
-        voteId = vote.vote
-        voteH = '/api/v1/vote/' + str(voteId)
-        billId = bmapping.voteH
-        decision = vote.option
-        print billId
-        outList.append((billId,decision))
+        voteId = vote['vote']
+        billId = billMap[voteId]
+        decision = vote['option']
+        if decision == '+':
+            outList.append((billId,1))
+        elif decision == '-':
+            outList.append((billId,0))
     outDictionary = dict(outList)
+    if len(votes) == 0:
+        print repId
     outFile = open('voting_records/' + str(repId), 'w')
     outFile.write(json.dumps(outDictionary))
-extractVotes(400003)
+
+reps = open('representatives')
+dictr = json.loads(reps.read())
+for key in dictr:
+    extractVotes(key)
+    
     
