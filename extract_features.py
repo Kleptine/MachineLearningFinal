@@ -1,7 +1,5 @@
 #   Extract features from a given bill object
 
-
-
 import sys, httplib, json, re
 import glob
 from pprint import pprint
