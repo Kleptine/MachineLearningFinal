@@ -41,8 +41,6 @@ def getStringVectors(dict, num,field):
             if v==None:
                 continue
             elif k==field:
-                print num
-                print v
                 vector= [0] * (num+1)
                 vector[v]=1
                 newdict[k]= vector
@@ -127,20 +125,15 @@ def extractFeatures(bill, nameID,districtID, names, districts): #start with -1
         'congress': congress
     }
     return (features, nameID,districtID, names, districts)
-
-
-def generateFeatureVector(bill_id):
-    
-    #extractFeatures...
-    return
+   
 
 
 # TODO /--------------------------------------------------------------------------------------
 # Gets the training set for a person given a person object and a list of all bills
-def getInputVectors(person, billMap):  
-    #f= open("./bills","r")
-    #bills=json.loads(f.read())
-    bills=billMap
+def getInputVectors(person):  #taking in a billmap for now
+    f= open("./voting_records/"+str(person),"r")
+    billsdict=json.loads(f.read()) 
+    bills=billsdict.keys()
     billFeatures=[]
     names={}
     districts={}
@@ -156,10 +149,19 @@ def getInputVectors(person, billMap):
     numdistricts= districtID
     billFeatures= getStringVectors(billFeatures,nameID, "sponsor_name")
     billFeatures= getStringVectors(billFeatures,nameID, "sponsor_district")
-    print billFeatures
+    file= open("./TrainingData/"+str(person),"w")
+    file.write(json.dumps(billFeatures))
     return billFeatures
         
+# takes in list of people and generates list of feature vectors for bills each person voted on      
+def getAllData():
+    reps = open('representatives')
+    dictr = json.loads(reps.read())
+    for key in dictr:
+        getInputVectors(key)
             
-getInputVectors(400003, [100008, 100010, 100028])
+            
 
+getInputVectors(400003)
+#getAllData()
 #pprint(extractFeatures(bill))
