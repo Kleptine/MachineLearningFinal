@@ -62,12 +62,14 @@ def extractFeatures(bill, nameID,districtID, names, districts): #start with -1
     match = re.search('[^\[]*', name)
     clean_name = name[match.start():match.end()].replace(' ','')
     if clean_name in name:
+        print "Repeated name: " + clean_name 
         nameID= names[clean_name]
     else:
         nameID=nameID+1
         names[clean_name]= nameID
         
     if sponsor_district in districts:
+        print "Repeated district " + str(sponsor_district) 
         districtID= districts[sponsor_district]
     else:
         districtID=districtID+1
