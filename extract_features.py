@@ -18,7 +18,7 @@ def boolToInt(bool):
         return 0
         
 def genderToInt(gender):
-    if gender==None or ( not (isinstance(gender,str))):
+    if gender==None:
         return 2 #for null gender ? 
     elif gender.lower()== 'male':
         return 1
@@ -26,7 +26,7 @@ def genderToInt(gender):
         return 0
         
 def partyToInt(party):
-    if party==None or ( not (isinstance(party,str))):
+    if party==None:
         return 2
     elif (party.lower()=="democrat"):
         return 1
