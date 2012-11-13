@@ -13,25 +13,25 @@ def get_bill(id):
 
 def boolToInt(bool):
     if bool:
-        1
+        return 1
     else:
-        0
+        return 0
         
 def genderToInt(gender):
     if gender==None or ( not (isinstance(gender,str))):
-        2
+        return 2 #for null gender ? 
     elif gender.lower()== 'male':
-        1
+        return 1
     else:
-        0
+        return 0
         
 def partyToInt(party):
     if party==None or ( not (isinstance(party,str))):
-        2
+        return 2
     elif (party.lower()=="democrat"):
-        1
+        return 1
     else:
-        0
+        return 0
         
 def getStringVectors(dict, num,field):
     billFeatures=[]
@@ -39,7 +39,7 @@ def getStringVectors(dict, num,field):
         newdict={}
         for (k,v) in billFeat.items():
             if v==None:
-                continue
+                continue  #does not include features that have value null 
             elif k==field:
                 vector= [0] * (num+1)
                 vector[v]=1
@@ -143,15 +143,15 @@ def getInputVectors(person):  #taking in a billmap for now
     districtID= -1
     for bill in bills:
         b= open("./bill_map/"+str(bill),"r")
-        dictrictID=districtID+1
+        #dictrictID=districtID+1
         text= json.loads(b.read())
         (dict,nameID,districtID,names, districts)= extractFeatures(text,nameID, districtID,names, districts)
         billFeatures. append(dict)         
     numNames= nameID
     numdistricts= districtID
-    billFeatures= getStringVectors(billFeatures,nameID, "sponsor_name")
-    billFeatures= getStringVectors(billFeatures,nameID, "sponsor_district")
-    file= open("./TrainingData/"+str(person),"w")
+    #billFeatures= getStringVectors(billFeatures,nameID, "sponsor_name")
+    #billFeatures= getStringVectors(billFeatures,nameID, "sponsor_district")
+    file= open("./TrainingData/"+str(person)+"report","w")
     file.write(json.dumps(billFeatures))
     return billFeatures
         
