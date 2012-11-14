@@ -2,6 +2,7 @@
 
 import sys, httplib, json, re
 import glob
+from datetime import date
 from pprint import pprint
 dictj={}
 reps=[]
@@ -75,17 +76,23 @@ def extractFeatures(bill, nameID,districtID, names, districts): #start with -1
         districtID=districtID+1
         names[sponsor_district]= districtID
         
-    year = int(bill['current_status_date'][0:4])
+    vote_date = bill['current_status_date'].split("-")
+    vd = date(int(vote_date[0]), int(vote_date[1]), int(vote_date[2]))
+    introduce_date = bill['introduced_date'].split("-")
+    id = date(int(introduce_date[0]), int(introduce_date[1]), int(introduce_date[2]))
+    delta = vd - id;
+    bill_length = delta.days
+    
+    year_introduced = int(bill['current_status_date'][0:4])
     year_mod2 = int(bill['current_status_date'][0:4]) % 2
     year_mod4 = int(bill['current_status_date'][0:4]) % 4
     year_mod6 = int(bill['current_status_date'][0:4]) % 6
-    year_introduced = int(bill['introduced_date'][0:4])
 
     bill_is_alive = boolToInt(bill['is_alive'])
     bill_is_current = boolToInt(bill['is_current'])
-
-    bill_length = year - year_introduced
-
+        
+    if bill_is_alive == 1:
+        print bill
     sponsor_end_year = int(bill['sponsor_role']['enddate'][:4])
     sponsor_start_year = int(bill['sponsor_role']['startdate'][:4])
     sponsor_gender = genderToInt(bill['sponsor']['gender'])
