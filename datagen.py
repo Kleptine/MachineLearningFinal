@@ -1,5 +1,8 @@
 # Write some file here to generate a dataset from govtrack.us api
-import httplib, json, glob
+import httplib, json, glob, re
+import nltk.util
+import os
+import random
 
 import sys
 from pprint import pprint
@@ -214,4 +217,72 @@ def generate_votes_per_rep():
         f.write(json.dumps(allVotes))
         f.close()
 
-build_vote_id_map()
+
+def build_summary_map():
+    conn = httplib.HTTPConnection('www.govtrack.us')
+    bills = json.loads(open('bills').read())
+
+    tot = len(bills)
+
+    for i, bill in enumerate(bills):
+        print
+        print '---------------------------'
+        print (bill + '            '+str(i)+'/'+str(tot))
+        print 
+
+        if os.path.isfile('bill_summaries/'+bill):
+            continue
+
+        billObj = json.loads(open('bill_map/'+bill).read())
+
+        conn.request('GET',billObj['link'][22:])
+
+        site_html = conn.getresponse().read()
+        match = re.search('<section class="clear"', site_html)
+        match2 = re.search('</section>', site_html)
+
+        if match != None:
+            summary_dirty = site_html[match.start():match2.end()]
+            summary = nltk.util.clean_html(summary_dirty)
+            summary = summary[199:]
+            print summary
+        else:
+            summary = ''
+
+        f = open('bill_summaries/'+bill, 'w')
+        f.write(json.dumps(summary))
+        f.close()
+
+
+'''
+    Call this method to redistribute votes from rep_votes_map to rep_votes_train / test. 
+    Args:
+        train_percent: The percentage of train to test.
+'''
+def split_train_test(train_percent):
+    reps = json.loads(open('representatives').read())
+    for i, rep in enumerate(reps):
+        if i % 30 == 0: print i
+
+        # Get the rep's votes and split them into a new map
+        votes = json.loads(open('rep_votes_map/'+rep).read())
+        random.shuffle(votes)
+
+        index = int(train_percent * len(votes))
+
+        trainVotes = votes[:index]
+        testVotes = votes[index:len(votes)]
+
+        f = open('rep_votes_train/'+rep, 'w')
+        f.write(json.dumps(trainVotes))
+        f.close()
+
+        f = open('rep_votes_test/'+rep, 'w')
+        f.write(json.dumps(testVotes))
+        f.close()
+
+
+
+
+
+

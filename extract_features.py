@@ -2,6 +2,9 @@
 #
 #   Extract features from a given bill object
 import httplib, json, re
+from nltk import tokenize
+from sets import Set
+import string
 
 import sys
 from pprint import pprint
@@ -12,6 +15,16 @@ def get_bill(id):
     f = open('bill_map/'+str(id))
     return json.loads(f.read())
 
+''' Removes unicode characters from string and converts to standard string
+    Some of our data seems to have unicode characters that won't print '''
+def removeNonAscii(s): 
+    return str("".join(i for i in s if ord(i)<128))
+
+def convert_bool_to_int(boolean):
+    if boolean:
+        return 1
+    return 0
+    
 def extractFeatures(bill):
     '''
     Returns:
@@ -22,7 +35,6 @@ def extractFeatures(bill):
     name = bill['sponsor']['name']
     match = re.search('[^\[]*', name)
     clean_name = name[match.start():match.end()].replace(' ','')
-    print clean_name
 
     year = int(bill['current_status_date'][0:4])
     year_mod2 = int(bill['current_status_date'][0:4]) % 2
@@ -42,12 +54,10 @@ def extractFeatures(bill):
     congress = int(bill['congress'])
 
 
-
+    # NOTE: Any features that we want to distributed into a list of binary features must be a string.
+    # Also make sure the data is preprocessed when you add a new string feature.
     features = {
         'sponsor_name': clean_name,
-        #'sponsor_name_first': bill['sponsor']['firstname'],
-        #'sponsor_name_middle': bill['sponsor']['middlename'],
-        #'sponsor_name_last': bill['sponsor']['lastname'],
         'vote_year': int(bill['current_status_date'][0:4]),
         'vote_month': int(bill['current_status_date'][5:7]),
         'vote_day': int(bill['current_status_date'][9:]),
@@ -64,21 +74,88 @@ def extractFeatures(bill):
         'congress': congress
     }
 
+    # Clean up any unicode characters into ascii and convert booleans into 0/1
+    for f in features:
+        if isinstance(features[f], unicode):
+            features[f] = removeNonAscii(features[f])
+        if isinstance(features[f], bool):
+            features[f] = convert_bool_to_int(features[f])
 
     return features # Return dictionary of features
 
 
-def generateFeatureVector(bill_id):
-    #extractFeatures...
-    return
+def generate_feature_vector(bill, preprocess_data, features_to_use):
+    '''
+        Generates a feature vector in the form our ML Kit takes
+        Args:
+            word_set: The set of all words in all training examples. Used for generating bag of words.
+    '''
+    feature_vector = [] # Final feature vector
+    feature_vector_labels = [] # Label for each feature vector bit
+
+    # ------------- Summary --------------
+    # Get our summary feature vector
+    if 'summary_word_bag' in features_to_use:
+        summary_text = json.loads(open('bill_summaries/'+bill['id']).read())
+        summary_vector, summary_labels = generate_summary_vector(summary_text, preprocess_data)
+
+        feature_vector.extend(summary_vector)
+        feature_vector_labels.extend(summary_labels)
+
+    # ------------- Bill Features ---------------
+    # We have our features as a mix of different types, we need to compress it into real values
+    if 'bill_feature_set' in features_to_use:
+        bill_features = extractFeatures(bill)
+        bill_feature_set = preprocess_data['bill_feature_set']
+
+        
+
+        # Convert all features that are strings into the appropriate bit lists using the preprocess data.
+        for feature_name in bill_features:
+            value = bill_features[feature_name]
+
+            # If we have a string feature, change to bit string
+            if isinstance(value, str): 
+                # Generate blank vector for this feature
+                vector = [0] * len(bill_feature_set[feature_name])
+
+                # If the value for the given feature was present in training, turn on the bit
+                if value in bill_feature_set[feature_name]:
+                    index = bill_feature_set[feature_name][value] # Int associated with this value
+                    vector[index] = 1
+
+                feature_vector.extend(vector)
+                feature_vector_labels.extend(bill_feature_set[feature_name].keys())
+
+            # Just add float/int features
+            else:
+                feature_vector.append(value)
+                feature_vector_labels.append(feature_name)
 
 
-# TODO /--------------------------------------------------------------------------------------
-# Gets the training set for a person given a person object and a list of all bills
-def getInputVectors(person, billMap):    
-    return []
+    return (feature_vector, feature_vector_labels)
 
 
-bill = get_bill(75622)
+def generate_summary_vector(summary_text, preprocess_data):
+    ''' 
+        Generates the set of features for the summary of this bill based on this set of words
+    '''
+    regex = re.compile('[%s]' % re.escape(string.punctuation))
 
-pprint(extractFeatures(bill))
+    summary_clean = regex.sub('', summary_text)
+    words = tokenize.word_tokenize(summary_clean)
+
+    word_set = preprocess_data['summary_word_bag']
+
+    # Initialize a vector for every possible word
+    word_vector = {}
+    for w in word_set:
+        word_vector[w] = 0
+
+    # Fill in the proper word frequencies
+    for w in words:
+        if w in word_set:
+            word_vector[w] += 1
+
+    return (word_vector.values(), word_vector.keys())
+
