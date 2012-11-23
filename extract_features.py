@@ -48,7 +48,7 @@ def extractFeatures(bill):
     sponsor_start_year = int(bill['sponsor_role']['startdate'][:4])
     sponsor_gender = bill['sponsor']['gender']
     sponsor_is_alive = bill['is_current']
-
+    sponsor_party = bill['sponsor_role']['party']
     sponsor_has_nickname = (bill['sponsor']['nickname'] != '')
 
     congress = int(bill['congress'])
@@ -71,6 +71,7 @@ def extractFeatures(bill):
         'sponsor_gender': sponsor_gender,
         'sponsor_is_alive': sponsor_is_alive,
         'sponsor_has_nickname': sponsor_has_nickname,
+        'sponsor_party': sponsor_party,
         'congress': congress
     }
 
@@ -115,7 +116,8 @@ def generate_feature_vector(bill, preprocess_data, features_to_use):
             value = bill_features[feature_name]
 
             # If we have a string feature, change to bit string
-            if isinstance(value, str): 
+            if feature_name in bill_feature_set: 
+                
                 # Generate blank vector for this feature
                 vector = [0] * len(bill_feature_set[feature_name])
 
