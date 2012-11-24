@@ -76,7 +76,8 @@ def getData(rep_id, data_directory, preprocess_data=None):
             if labels != all_labels:
                 print "Error: Labels differ on data points. Feature vector generation is messed up."
 
-        data_points.append(point)
+        if point['option']=="+" or point['option']=="-":
+            data_points.append(point)
 
     # Save off the data and return 
     result = {'labels':labels, 'data':data_points}
