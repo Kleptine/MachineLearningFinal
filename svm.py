@@ -1,6 +1,8 @@
 import numpy as np
 import json
 from sklearn import svm
+from pprint import pprint
+import operator
 
 
 
@@ -19,11 +21,13 @@ def getVoteOutcome(option):
     else:
         return 0
 
-def genDataset(person, folderpath):
-    path= "data_set/"
-    f= open (folderpath+str(person))
-    dict= json.loads(f.read())
-    data_points= dict.get('data')
+def genDataset(person, data_set):
+    '''
+        Generate the data to plug into the SVM
+    '''
+
+    data_points = data_set['data']
+    
     traindata=[]
     data_labels=[]
     for point in data_points:
@@ -34,20 +38,20 @@ def genDataset(person, folderpath):
     return (traindata, data_labels)
 
 
-def trainSVM(person,C,gamma, kernel):
-    path= "data_set/main_train/"
-    (train_data, data_labels)= genDataset(person, path)
+def trainSVM(person,C,gamma, kernel, training_data_set):
+    (train_data, data_labels) = genDataset(person, training_data_set)
 
     Xtrain=np.array(train_data)
     Ytrain= np.array(data_labels)
-    classifier= svm.SVC(C=C,gamma=gamma, kernel='rbf')
+    classifier= svm.SVC(C=C,gamma=gamma, kernel=kernel)
     print classifier.fit (Xtrain,Ytrain)
+
     return classifier
 
 
-def testSVM(person, classifier):
-    path= "data_set/main_test/"
-    (data, labels)= genDataset(person, path)
+def testSVM(person, classifier, test_data_set):
+    (data, labels) = genDataset(person, test_data_set)
+
     test_data_length= len(labels)
     print "Length of test data is: "+str(test_data_length)
     test_data=np.array(data)
@@ -75,17 +79,32 @@ def testSVM(person, classifier):
     print "Number of false predictions of a yes vote: " + str(numfalseyes)
     print "Number of false predictions of a no vote: " + str(numfalseno)
 
+    if classifier.kernel == 'linear':
+        feature_weights = []
+        # Print out the most heavlly weight features
+        for i, ar in enumerate(classifier.coef_[0]):
+            feature_weights.append((test_data_set['labels'][i], ar))
+
+        feature_weights = sorted(feature_weights, key=operator.itemgetter(1), reverse=True)
+        pprint(feature_weights[:40])
 
 
-def svmLearn(person, C, gamma,kernel):
-    classifier= trainSVM(person, C, gamma, kernel)
-    testSVM(person, classifier)
+def svmLearn(person, C, gamma,kernel, experiment_name='main'):
+    data_set_train = json.loads(open('data_set/'+experiment_name+'_train/'+str(person)).read()) # Ugly but short way to open training data
+    data_set_test = json.loads(open('data_set/'+experiment_name+'_test/'+str(person)).read()) # Ugly but short way to open training data
+                                                                                           # 
+    classifier= trainSVM(person, C, gamma, kernel, data_set_train)
+    testSVM(person, classifier, data_set_test)
+    
 
 svmLearn(400003, 1.0,0.0, 'linear')
-svmLearn(400003, 100.0,0.0,'linear')
-svmLearn(400003, 10.0,0.001, 'rbf')
-svmLearn(400003, 100.0,0.01, 'rbf')
-svmLearn(400003, 100.0,0.001,'rbf')
+
+#svmLearn(412282, 1.0,0.0, 'linear')
+
+#svmLearn(400003, 100.0,0.0,'linear')
+#svmLearn(400003, 10.0,0.001, 'rbf')
+#svmLearn(400003, 100.0,0.01, 'rbf')
+#svmLearn(400003, 100.0,0.001,'rbf')
 
 
 
