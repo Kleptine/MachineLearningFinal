@@ -2,6 +2,7 @@
 #
 #   Extract features from a given bill object
 import httplib, json, re
+import config
 from nltk import tokenize
 from sets import Set
 import string
@@ -82,10 +83,15 @@ def extractFeatures(bill):
         if isinstance(features[f], bool):
             features[f] = convert_bool_to_int(features[f])
 
+    # Remove any features we're ignoring
+    for f in config.features_to_ignore:
+        if f in features:
+            features.pop(f)
+
     return features # Return dictionary of features
 
 
-def generate_feature_vector(bill, preprocess_data, features_to_use):
+def generate_feature_vector(bill, preprocess_data):
     '''
         Generates a feature vector in the form our ML Kit takes
         Args:
@@ -96,7 +102,7 @@ def generate_feature_vector(bill, preprocess_data, features_to_use):
 
     # ------------- Summary --------------
     # Get our summary feature vector
-    if 'summary_word_bag' in features_to_use:
+    if 'summary_word_bag' not in config.features_to_ignore:
         summary_text = json.loads(open('bill_summaries/'+bill['id']).read())
         summary_vector, summary_labels = generate_summary_vector(summary_text, preprocess_data)
 
@@ -105,7 +111,7 @@ def generate_feature_vector(bill, preprocess_data, features_to_use):
 
     # ------------- Bill Features ---------------
     # We have our features as a mix of different types, we need to compress it into real values
-    if 'bill_feature_set' in features_to_use:
+    if 'bill_feature_set' not in config.features_to_ignore:
         bill_features = extractFeatures(bill)
         bill_feature_set = preprocess_data['bill_feature_set']
 

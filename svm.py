@@ -3,6 +3,7 @@ import json
 from sklearn import svm
 from pprint import pprint
 import operator
+import os.path
 
 
 
@@ -14,12 +15,14 @@ gamma defines how much influence a single training example has. The larger gamma
 '''
 
 
-
 def getVoteOutcome(option):
     if option =="+":
         return 1
-    else:
+    elif option == "-":
         return 0
+
+    raise "ERROR: ABSTAIN VOTE COUNTED"
+
 
 def genDataset(person, data_set):
     '''
@@ -38,27 +41,45 @@ def genDataset(person, data_set):
     return (traindata, data_labels)
 
 
-def trainSVM(person,C,gamma, kernel, training_data_set):
+def trainSVM(person,C,gamma, kernel, training_data_set, debug=2):
+    '''
+        Args:
+            debug: How much info to print: 0=none, 1=minimal, 2=all
+    '''
     (train_data, data_labels) = genDataset(person, training_data_set)
 
     Xtrain=np.array(train_data)
     Ytrain= np.array(data_labels)
     classifier= svm.SVC(C=C,gamma=gamma, kernel=kernel)
-    print classifier.fit (Xtrain,Ytrain)
+    classifier.fit (Xtrain,Ytrain)
 
     return classifier
 
 
-def testSVM(person, classifier, test_data_set):
+def testSVM(person, classifier, test_data_set, debug=2):
+    '''
+        Args:
+            debug: How much info to print: 0=none, 1=minimal, 2=all
+    '''
+    # Get our data and our classes
     (data, labels) = genDataset(person, test_data_set)
 
-    test_data_length= len(labels)
-    print "Length of test data is: "+str(test_data_length)
+    test_data_length= len(data)
+    if debug >= 2: print "Test Data Length: "+str(test_data_length)
+
+    # Convert our data into something useable by the SVM library
     test_data=np.array(data)
     data_labels= np.array(labels)
+
+    # PREDICT IT!
     prediction= classifier.predict(test_data)
+
     if len(prediction)!=test_data_length:
-        print "Error in SVMtest: predicted data corrupted"
+        print "Error in SVMtest: Predicted labels not same length as test data."
+        return
+
+
+    # Grade our results:
     numerrors=0
     numfalseyes=0
     numfalseno=0
@@ -73,31 +94,38 @@ def testSVM(person, classifier, test_data_set):
                 numfalseno = numfalseno+1
     errorrate= float(numerrors)/float(test_data_length)*100
     accuracy= float(100)- errorrate
-    print "Number of errors: "+str(numerrors)
-    print "Error Percentage: "+ str(errorrate)
-    print "Accuracy: " + str(accuracy)
-    print "Number of false predictions of a yes vote: " + str(numfalseyes)
-    print "Number of false predictions of a no vote: " + str(numfalseno)
+    if debug >= 2: print "Number of errors: "+str(numerrors)
+    if debug >= 1: print "Error Percentage: "+ str(errorrate)
+    if debug >= 1: print "Accuracy: " + str(accuracy)
+    if debug >= 2: print "Number of false predictions of a yes vote: " + str(numfalseyes)
+    if debug >= 2: print "Number of false predictions of a no vote: " + str(numfalseno)
 
-    if classifier.kernel == 'linear':
+    # Print out the most heavily weight features (only defined for a linear kernel)
+    if debug >= 2 and classifier.kernel == 'linear':
+        print 
+        print "Top weighted features:"
         feature_weights = []
-        # Print out the most heavlly weight features
+        # Form a tuple list so we can sort the list by feature weight
         for i, ar in enumerate(classifier.coef_[0]):
-            feature_weights.append((test_data_set['labels'][i], ar))
+            if test_data_set['labels'][i][:4] != 'Rep.' and test_data_set['labels'][i][:4] != 'Sen.':
+                feature_weights.append((test_data_set['labels'][i], abs(ar), ar))
 
         feature_weights = sorted(feature_weights, key=operator.itemgetter(1), reverse=True)
-        pprint(feature_weights[:40])
+
+        # The middle of the tuple is the absolute value used for sorting, remove that and display
+        for feature_name, _, value in feature_weights:
+            pprint((value, feature_name))
 
 
-def svmLearn(person, C, gamma,kernel, experiment_name='main'):
+def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=2):
     data_set_train = json.loads(open('data_set/'+experiment_name+'_train/'+str(person)).read()) # Ugly but short way to open training data
-    data_set_test = json.loads(open('data_set/'+experiment_name+'_test/'+str(person)).read()) # Ugly but short way to open training data
-                                                                                           # 
-    classifier= trainSVM(person, C, gamma, kernel, data_set_train)
-    testSVM(person, classifier, data_set_test)
+    data_set_test = json.loads(open('data_set/'+experiment_name+'_test/'+str(person)).read()) # Ugly but short way to open test data
     
+    classifier = trainSVM(person, C, gamma, kernel, data_set_train, debug)
+    testSVM(person, classifier, data_set_test, debug)
 
-svmLearn(400003, 1.0,0.0, 'linear')
+# Call this from an experiment such as exp__no_summary.py
+#svmLearn(400003, C=1.0, gamma=0.0, kernel='linear', debug=1)
 
 #svmLearn(412282, 1.0,0.0, 'linear')
 

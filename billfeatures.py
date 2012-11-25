@@ -1,2 +1,0 @@
-def getFeatures(bill):
-    pass

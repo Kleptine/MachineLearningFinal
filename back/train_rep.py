@@ -2,17 +2,14 @@ import json
 import extract_features
 import preprocess
 from pprint import pprint
+import hashlib
+
 # This file basically makes use of our databases to train a single rep.
 # Train a single rep
 
 repId = '400003'
 features_to_use = ['bill_feature_set'] # ['bill_features', 'summary_word_bag']
 
-
-
-def getTrainVotes(rep_id):
-    ''' Gets this rep's votes '''
-    return load_json('rep_votes_train/'+rep_id)
 
 def getBills(rep_id, votes):
     bills = []
@@ -27,7 +24,7 @@ def getBills(rep_id, votes):
 
 def getTrainingPoints(rep_id):
     print 'Getting votes and bills...'
-    votes = getTrainVotes(rep_id)
+    votes = load_json('rep_votes_train/'+rep_id)
     bills = getBills(rep_id, votes)
     print 'done.'
 
@@ -35,6 +32,7 @@ def getTrainingPoints(rep_id):
     preprocess_data = preprocess.preprocess(rep_id, bills, features_to_use)
     data_points = []
     all_labels = None
+    label_hash = None
 
     print "Generating all feature vectors"
     # Iterate through all the votes and bills and compile the final data set
@@ -54,17 +52,22 @@ def getTrainingPoints(rep_id):
 
         # If the labels for this vector are different from the previous, 
         # the feature generation is messed up or out of order
-        
+        if all_labels == None:
+            all_labels = labels
+        else:
+            
+            if labels != all_labels:
+                print "Error: Labels differ on data points. Feature vector generation is messed up."
 
         data_points.append(point)
 
-    return data_points
+    return (labels, data_points)
 
 
 def load_json(filename):
     return json.loads(open(filename).read())
 
-points = getTrainingPoints(repId)
+labels, points = getTrainingPoints(repId)
 f = open('__testpoints', 'w')
-f.write(json.dumps(points[:10]))
+f.write(json.dumps({'labels':labels,'data':points[10]}))
 f.close()

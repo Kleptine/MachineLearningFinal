@@ -4,8 +4,9 @@ from nltk import tokenize
 from sets import Set
 from pprint import pprint
 import string
+import config
 
-def preprocess(rep_id, bills, features_to_use):
+def preprocess(rep_id, bills):
     '''
         Preprocesses all votes/bills for this rep.
         This method only calculates the preprocess data if the md5 of it's inputs or preprocess.py are changed.
@@ -39,13 +40,13 @@ def preprocess(rep_id, bills, features_to_use):
         feature_extract_changed = True
     
     # If we need to regenerate our word_bag data (only if preprocess.py changes)
-    if 'summary_word_bag' in features_to_use: # Verify that we're actually using this feature (in the name of saving time)
+    if 'summary_word_bag' not in config.features_to_ignore: # Verify that we're actually using this feature (in the name of saving time)
         if preprocess_changed or 'summary_word_bag' not in preprocess_data:
             print ".. Building summary word bag"
             preprocess_data['summary_word_bag'] = generate_summary_word_set(bills)
 
     # If we need to regenerate our feature data (only if preprocess.py or feature_extract.py changes)
-    if 'bill_feature_set' in features_to_use:
+    if 'bill_feature_set' in config.features_to_ignore:
         if preprocess_changed or feature_extract_changed or 'bill_feature_set' not in preprocess_data:
             print 'Building base feature set for string features'
             preprocess_data['bill_feature_set'] = generate_bill_feature_sets(bills)
