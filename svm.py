@@ -3,9 +3,12 @@ import json
 from sklearn import svm
 from pprint import pprint
 import operator
+import sys
 import os.path
-
-
+import json
+import config 
+import scipy.sparse
+import time
 
 '''
 When training an SVM with the Radial Basis Function (RBF) kernel, two parameters must be considered: C and gamma. 
@@ -49,11 +52,30 @@ def trainSVM(person,C,gamma, kernel, training_data_set, debug=2):
     (train_data, data_labels) = genDataset(person, training_data_set)
 
     Xtrain=np.array(train_data)
-    Ytrain= np.array(data_labels)
-    classifier= svm.SVC(C=C,gamma=gamma, kernel=kernel)
-    classifier.fit (Xtrain,Ytrain)
+    print len(Xtrain)
+    Ytrain=np.array(data_labels)
+    if config.use_sparse_data:
+        print "Booyy, we makin this sparse!"
+        Xtrain =scipy.sparse.csr_matrix(Xtrain)
 
-    return classifier
+        #Ytrain=scipy.sparse.csr_matrix(Ytrain)
+
+    classifier= svm.SVC(C=C,gamma=gamma, kernel=kernel, cache_size=1000)
+
+    sys.stdout.write('.Learning.')
+    start = time.time()
+    classifier.fit(Xtrain,Ytrain)
+    end = time.time()
+    sys.stdout.write('..done\n')
+    print "Took "+str(end-start) + " seconds."
+
+    trainAcc = classifier.score(Xtrain, Ytrain)
+    stats = {
+        'Train Accuracy': trainAcc,
+        'Train Size': len(train_data)
+    }
+
+    return (classifier, stats)
 
 
 def testSVM(person, classifier, test_data_set, debug=2):
@@ -72,6 +94,7 @@ def testSVM(person, classifier, test_data_set, debug=2):
     data_labels= np.array(labels)
 
     # PREDICT IT!
+    print '.Classifying.'
     prediction= classifier.predict(test_data)
 
     if len(prediction)!=test_data_length:
@@ -80,6 +103,8 @@ def testSVM(person, classifier, test_data_set, debug=2):
 
 
     # Grade our results:
+    stats = {}  # Dictionary to store statistics
+
     numerrors=0
     numfalseyes=0
     numfalseno=0
@@ -99,6 +124,13 @@ def testSVM(person, classifier, test_data_set, debug=2):
     if debug >= 1: print "Accuracy: " + str(accuracy)
     if debug >= 2: print "Number of false predictions of a yes vote: " + str(numfalseyes)
     if debug >= 2: print "Number of false predictions of a no vote: " + str(numfalseno)
+    stats['Test Errors'] = numerrors
+    stats['Test Accuracy'] = accuracy
+    stats['Test Error Rate'] = errorrate
+    stats['Test False Positives'] = numfalseyes
+    stats['Test False Negatives'] = numfalseno
+    stats['Test Size'] = str(test_data_length)
+
 
     # Print out the most heavily weight features (only defined for a linear kernel)
     if debug >= 2 and classifier.kernel == 'linear':
@@ -116,13 +148,66 @@ def testSVM(person, classifier, test_data_set, debug=2):
         for feature_name, _, value in feature_weights:
             pprint((value, feature_name))
 
+    return stats
+
+
+
 
 def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=2):
+    print 'data_set/'+experiment_name+'_train/'+str(person)
     data_set_train = json.loads(open('data_set/'+experiment_name+'_train/'+str(person)).read()) # Ugly but short way to open training data
     data_set_test = json.loads(open('data_set/'+experiment_name+'_test/'+str(person)).read()) # Ugly but short way to open test data
-    
-    classifier = trainSVM(person, C, gamma, kernel, data_set_train, debug)
-    testSVM(person, classifier, data_set_test, debug)
+
+    if debug >= 1: 
+        print
+        print ' ---- Training / Classifying ---- '
+
+    classifier, train_stats = trainSVM(person, C, gamma, kernel, data_set_train, debug)
+    test_stats = testSVM(person, classifier, data_set_test, debug)
+
+    stats = {}
+    stats.update(train_stats)
+    stats.update(test_stats)
+
+    return stats
+
+
+def svmLearnAll(C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=2, rep_max=None):
+    personlist = json.loads(open('representatives').read())
+    if rep_max == None: 
+        rep_max = len(personlist.keys())
+    # Keep a record of everyone's statistics
+    all_stats = {}
+
+    start = time.time()
+
+    count = 0
+    for rep_id in personlist.keys()[:rep_max]:
+        print 
+        print '====================================='
+        print '     '+rep_id+'    '+str(count)+'/'+str(len(personlist))
+        print
+        stats = svmLearn(rep_id, C=C, gamma=gamma, kernel=kernel, experiment_name=experiment_name, debug=debug)
+        all_stats[rep_id] = stats
+
+        count += 1
+
+    end = time.time()
+
+    acc = 0
+    tot = 0
+    for s in all_stats:
+        acc += int(all_stats[s]['Test Errors'])
+        tot += int(all_stats[s]['Test Size'])
+    acc = float(acc)/float(tot)
+
+    print
+    print  'Total time:   '+str(end-start) + '  seconds.'
+    print  'Total Accuracy:   '+str(1-acc)
+    print
+
+    return all_stats
+
 
 # Call this from an experiment such as exp__no_summary.py
 #svmLearn(400003, C=1.0, gamma=0.0, kernel='linear', debug=1)

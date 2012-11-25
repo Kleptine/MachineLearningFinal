@@ -13,3 +13,12 @@ features_to_ignore = ['summary_word_bag']
 
 # Do we want to ignore abstaining votes
 remove_abstaining_votes = True      
+
+# Ignore caching for our feature vectors. Might take a little while to generate.
+force_generate_features = False
+
+# Ignore caching for preprocessing when generating feature vectors. Takes a while when using summary bag.
+force_preprocess = False
+
+# Whether to convert feature vectors into sparse arrays
+use_sparse_data = False

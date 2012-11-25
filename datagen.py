@@ -39,11 +39,32 @@ def getReps2():
         role = i['current_role']
         if role != None:
             if role['role_type'] == 'representative':
+                # Make sure this person actually votes
                 reps.append((i['id'], i))
     repsD = dict(reps)
     f = open('representatives','w')
     f.write(json.dumps(repsD))
     f.close()
+
+def cleanReps():
+    '''
+        Remove reps with no votes
+    '''
+    reps = json.loads(open('representatives').read())
+    print 'len: '+str(len(reps))
+    newreps = {}
+    for r in reps:
+        try:
+            votes = json.loads(open('rep_votes_map/'+r).read())
+            if len(votes)>5:
+                newreps[r] = reps[r]
+        except Exception as e:
+            print "error on "+str(r)
+    
+    f = open('representatives','w')
+    f.write(json.dumps(newreps))
+    f.close()
+
 
 # Returns a list of current representative IDs
 def getReps():
@@ -282,7 +303,4 @@ def split_train_test(train_percent):
         f.close()
 
 
-
-
-
-
+cleanReps()

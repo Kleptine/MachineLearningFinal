@@ -36,7 +36,7 @@ def extractFeatures(bill):
 
     # Clean up name (remove dates)
     name = bill['sponsor']['name']
-    sponsor_district= bill['sponsor_role']['district']
+    sponsor_district= str(bill['sponsor_role']['district'])
     match = re.search('[^\[]*', name)
     clean_name = name[match.start():match.end()].replace(' ','')
 
@@ -104,6 +104,13 @@ def extractFeatures(bill):
     for f in config.features_to_ignore:
         if f in features:
             features.pop(f)
+
+    # Sanity check to verify that any features that are int's or float's are never
+    # None
+    for f in features:
+        if isinstance(features[f], int) or isinstance(features[f], float):
+            if features[f] == None:
+                raise "Oh god. The "+f+" should be a number but someone has their value as None"
 
     return features # Return dictionary of features
 

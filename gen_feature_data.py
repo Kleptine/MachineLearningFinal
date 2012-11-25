@@ -5,6 +5,7 @@ import config
 from pprint import pprint
 import os.path
 import sys
+import time
 
 def load_json(filename):
     ''' Small helper to easily load json files '''
@@ -37,7 +38,7 @@ def getData(rep_id, data_directory, preprocess_data=None):
     print 'Getting votes and bills...'
     votes = load_json(data_directory+'/'+rep_id) # Get the training votes for this rep
     bills = getBills(votes)
-    print 'done.'
+    print '\tdone.'
 
     # Generate information about the bills used for later feature generation
     if preprocess_data == None:
@@ -47,7 +48,7 @@ def getData(rep_id, data_directory, preprocess_data=None):
     all_labels = None
     label_hash = None
 
-    print "Generating all feature vectors"
+    print "Generating all feature vectors..."
 
     # Iterate through all the votes and bills and compile the final data set
     for i, v in enumerate(votes):
@@ -71,7 +72,6 @@ def getData(rep_id, data_directory, preprocess_data=None):
         if all_labels == None:
             all_labels = labels
         else:
-            
             if labels != all_labels:
                 print "Error: Labels differ on data points. Feature vector generation is messed up."
 
@@ -102,44 +102,65 @@ def getTestingData(rep_id):
 
 
 #generates experiment data for single rep and stores in data_set/<experiment_name>_(train/test)/<rep_id>
-def genExperimentData(rep_id, experiment_name):
+def genExperimentData(rep_id, experiment_name, debug=2):
 
-    print
-    print "-------- " + rep_id + ' --------'
-    print 
+    if debug >= 2:
+        print
+        print "-------- " + rep_id + ' --------'
+        print 
 
-    print ' ---- Generating Training Data ---- '
-    # Get our training data
-    train = getTrainingData(rep_id)
-
-    # Create vector directory to save if necessary
-    if not os.path.exists('data_set/'+experiment_name+'_train'):
-        os.makedirs('data_set/'+experiment_name+'_train')
-
-    f = open('data_set/'+experiment_name+'_train/'+rep_id, 'w')
-    f.write(json.dumps(train))
-    f.close()
+        print ' ---- Generating Training Data ---- '
     
+    # Load the cached vectors if they exist, otherwise generate them and save them
+    train_path = 'data_set/'+experiment_name+'_train/'+rep_id
+    if os.path.exists(train_path) and not config.force_generate_features:
+        if debug >= 1: print 'Pass. Using '+train_path+' training data.'
+    else:
+        # Get our training data
+        train = getTrainingData(rep_id)
 
-    print
-    print ' ---- Generating Testing Data ---- '
-    # Save our test data
-    test = getTestingData(rep_id)
+        # Create vector directory to save if necessary
+        if not os.path.exists('data_set/'+experiment_name+'_train'):
+            os.makedirs('data_set/'+experiment_name+'_train')
 
-    if not os.path.exists('data_set/'+experiment_name+'_test'):
-        os.makedirs('data_set/'+experiment_name+'_test')
+        f = open(train_path, 'w')
+        f.write(json.dumps(train))
+        f.close()
+        
+    if debug >= 2:
+        print
+        print ' ---- Generating Testing Data ---- '
 
-    f = open('data_set/'+experiment_name+'_test/'+rep_id, 'w')
-    f.write(json.dumps(test))
-    f.close()
-    
+    # Load the cached vectors if they exist, otherwise generate them and save them
+    test_path = 'data_set/'+experiment_name+'_test/'+rep_id
+    if os.path.exists(test_path) and not config.force_generate_features:
+        if debug >= 1: print 'Pass. Using '+test_path+' testing data.'
+    else:
+        # Get our testing data
+        test = getTestingData(rep_id)
+
+        # Create vector directory to save if necessary
+        if not os.path.exists('data_set/'+experiment_name+'_test'):
+            os.makedirs('data_set/'+experiment_name+'_test')
+
+        f = open(test_path, 'w')
+        f.write(json.dumps(test))
+        f.close()    
     
 #generates experiment data for all reps and stores in TrainingData/<rep_id>
 def genAllExperimentData(experiment_name):
     personlist = json.loads(open('representatives').read())
 
+    count = 0
     for rep_id in personlist:
+        print 
+        print '====================================='
+        print '     '+rep_id+'    '+str(count)+'/'+str(len(personlist))
+        print '====================================='
+        print
         genExperimentData(rep_id, experiment_name)
+
+        count += 1
 
 
 
