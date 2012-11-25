@@ -10,7 +10,7 @@ Runs on all representatives, and saves results under experiment_results/all_no_s
 Note: only runs on 20 for now
 '''
 
-name = "all_no_summary"
+name = "all_no_summary_linear"
 
 config.features_to_ignore = ['summary_word_bag']
 config.force_generate_features = False
@@ -24,7 +24,7 @@ gen_feature_data.genAllExperimentData(experiment_name=name)
 # Train the SVM and print results
 # TODO(john): Return results in such a way that we can analyze multiple reps
 # 	or plug it into excel or something.
-stats = svm.svmLearnAll(C=10.0, gamma=.1, kernel='rbf', experiment_name=name, debug=1, rep_max=20)
+stats = svm.svmLearnAll(C=.01, gamma=0.0, kernel='linear', experiment_name=name, debug=1)
 
 
 print "Done with all reps"
