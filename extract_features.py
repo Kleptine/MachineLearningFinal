@@ -6,6 +6,8 @@ import config
 from nltk import tokenize
 from sets import Set
 import string
+from datetime import date
+
 
 import sys
 from pprint import pprint
@@ -34,6 +36,7 @@ def extractFeatures(bill):
 
     # Clean up name (remove dates)
     name = bill['sponsor']['name']
+    sponsor_district= bill['sponsor_role']['district']
     match = re.search('[^\[]*', name)
     clean_name = name[match.start():match.end()].replace(' ','')
 
@@ -43,14 +46,25 @@ def extractFeatures(bill):
     year_mod6 = int(bill['current_status_date'][0:4]) % 6
     year_introduced = int(bill['introduced_date'][0:4])
 
-    bill_length = year - year_introduced
+    vote_date = bill['current_status_date'].split("-")
+    vd = date(int(vote_date[0]), int(vote_date[1]), int(vote_date[2]))
+    introduce_date = bill['introduced_date'].split("-")
+    id = date(int(introduce_date[0]), int(introduce_date[1]), int(introduce_date[2]))
+    delta = vd - id;
+    bill_length = delta.days
+    bill_is_alive = bill['is_alive']
+    bill_is_current = bill['is_current']
 
     sponsor_end_year = int(bill['sponsor_role']['enddate'][:4])
     sponsor_start_year = int(bill['sponsor_role']['startdate'][:4])
     sponsor_gender = bill['sponsor']['gender']
     sponsor_is_alive = bill['is_current']
     sponsor_party = bill['sponsor_role']['party']
-    sponsor_has_nickname = (bill['sponsor']['nickname'] != '')
+    sponsor_has_nickname = bill['sponsor']['nickname'] != ''
+    sponsor_district= str(bill['sponsor_role']['district'])
+    sponsor_has_nickname = bill['sponsor']['nickname'] != ''
+    sponsor_has_twitter= bill['sponsor']['twitterid']!=''
+
 
     congress = int(bill['congress'])
 
@@ -63,15 +77,18 @@ def extractFeatures(bill):
         'vote_month': int(bill['current_status_date'][5:7]),
         'vote_day': int(bill['current_status_date'][9:]),
         'vote_year_m2': year_mod2,
-        'vote_year_m2': year_mod4,
-        'vote_year_m2': year_mod6,
+        'vote_year_m4': year_mod4,
+        'vote_year_m6': year_mod6,
         'year_introduced': year_introduced,
         'bill_length': bill_length,
+        'bill_is_alive' : bill_is_alive,
+        'bill_is_current': bill_is_current,
         'sponsor_end_year': sponsor_end_year,
         'sponsor_start_year': sponsor_start_year,
         'sponsor_gender': sponsor_gender,
-        'sponsor_is_alive': sponsor_is_alive,
         'sponsor_has_nickname': sponsor_has_nickname,
+        'sponsor_district':sponsor_district,
+        'sponsor_has_twitter': sponsor_has_twitter,
         'sponsor_party': sponsor_party,
         'congress': congress
     }
