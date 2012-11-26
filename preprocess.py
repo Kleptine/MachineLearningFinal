@@ -5,6 +5,8 @@ from sets import Set
 from pprint import pprint
 import string
 import config
+import operator
+from nltk.stem.porter import PorterStemmer
 
 def preprocess(rep_id, bills):
     '''
@@ -48,23 +50,34 @@ def preprocess(rep_id, bills):
 
     return preprocess_data
 
-
+st = PorterStemmer()
 
 def generate_summary_word_set(bills):
     ''' Generates a set of frequencies of all words in summaries of bills provided '''
     regex = re.compile('[%s]' % re.escape(string.punctuation))
     word_set = {}
 
+
     for bill in bills:
         b = bill['id']
         summary_text = json.loads(open('bill_summaries/'+b).read())
         summary_clean = regex.sub('', summary_text)
         words = tokenize.word_tokenize(summary_clean)
+
         for w in words:
+            if config.stem_words: 
+                w = st.stem(w)
+
             if w in word_set:
                 word_set[w] += 1
             else:
                 word_set[w] = 1
+
+    word_list = []
+    for w in word_set:
+        word_list.append((w, word_set[w]))
+    word_list = sorted(word_list, key=operator.itemgetter(1), reverse=True)
+    pprint(word_list[:100])
 
     # Apparently we can remove all words only seen once? Interesting I guess. We can comment this in if necessary.
     # TODO(john): Add in NLP additions such as removing word endingds, and possibly bigrams

@@ -22,3 +22,20 @@ force_preprocess = False
 
 # Whether to convert feature vectors into sparse arrays
 use_sparse_data = False
+
+
+#Whether to normalize our data
+normalize_data = False
+
+# How to normalize the data
+#  unit_length: Scales individual vectors to have a unit length
+#  center: Centers and scales data to fit around zero.
+normalize_type = 'unit_length'
+
+
+# Whether to stem words for the summaries 
+stem_words = False
+
+# --------------------------- globals
+scaler = None
+

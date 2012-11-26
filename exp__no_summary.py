@@ -28,4 +28,4 @@ gen_feature_data.genExperimentData(rep_id, experiment_name=name)
 # Train the SVM and print results
 # TODO(john): Return results in such a way that we can analyze multiple reps
 # 	or plug it into excel or something.
-svm.svmLearn(rep_id, C=1.0, gamma=0.0, kernel='linear', debug=1)
+svm.svmLearn(rep_id, C=1.0, gamma=0.0, kernel='linear', debug=1, experiment_name=name)

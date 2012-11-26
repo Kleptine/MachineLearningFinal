@@ -7,7 +7,10 @@ from nltk import tokenize
 from sets import Set
 import string
 from datetime import date
+from nltk.stem.porter import PorterStemmer
+import config
 
+st = PorterStemmer()
 
 import sys
 from pprint import pprint
@@ -186,6 +189,8 @@ def generate_summary_vector(summary_text, preprocess_data):
 
     # Fill in the proper word frequencies
     for w in words:
+        if config.stem_words:
+            w = st.stem(w)
         if w in word_set:
             word_vector[w] += 1
 

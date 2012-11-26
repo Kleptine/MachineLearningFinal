@@ -9,6 +9,7 @@ import json
 import config 
 import scipy.sparse
 import time
+import sklearn.preprocessing as preprocessing
 
 '''
 When training an SVM with the Radial Basis Function (RBF) kernel, two parameters must be considered: C and gamma. 
@@ -52,13 +53,25 @@ def trainSVM(person,C,gamma, kernel, training_data_set, debug=2):
     (train_data, data_labels) = genDataset(person, training_data_set)
 
     Xtrain=np.array(train_data)
-    print len(Xtrain)
     Ytrain=np.array(data_labels)
+
+    if debug >= 1: print "Sample length: " + str(len(Xtrain))
+
+    if config.normalize_data:
+        # Create a new scaler object so we can apply the same scale to the test set
+        if config.normalize_type == 'center':
+            #BAD PRACTICE: But I'm lazy and don't want to pass around tranformation objects
+            config.scaler = preprocessing.Scaler().fit(Xtrain)
+        if config.normalize_type == 'unit_length':
+            config.scaler = preprocessing.Normalizer().fit(Xtrain)
+
+        Xtrain = config.scaler.transform(Xtrain)
+
+
+    # Convert to sparse representation if requested
     if config.use_sparse_data:
         print "Booyy, we makin this sparse!"
         Xtrain =scipy.sparse.csr_matrix(Xtrain)
-
-        #Ytrain=scipy.sparse.csr_matrix(Ytrain)
 
     classifier= svm.SVC(C=C,gamma=gamma, kernel=kernel, cache_size=1000)
 
@@ -92,6 +105,11 @@ def testSVM(person, classifier, test_data_set, debug=2):
     # Convert our data into something useable by the SVM library
     test_data=np.array(data)
     data_labels= np.array(labels)
+
+    # Scale data if necessary
+    if config.normalize_data:
+        test_data = config.scaler.transform(test_data)
+
 
     # PREDICT IT!
     print '.Classifying.'
