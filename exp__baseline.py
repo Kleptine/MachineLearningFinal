@@ -98,12 +98,7 @@ def baselineAll( experiment_name='baseline', debug=1, rep_max=None):
     acc = 0
     tot = 0
     for s in all_stats.keys():
-        temp= all_stats[s]
-        if temp== None:
-            print "all_stats[s] is none for s="+str(s)
-        temp2=  int((temp)['Total Errors'])
-        print temp2
-        acc += temp2
+        acc += int(all_stats[s]['Total Errors'])
         tot += int(all_stats[s]['Dataset Size'])
     acc = float(acc)/float(tot)
 
