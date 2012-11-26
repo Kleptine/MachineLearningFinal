@@ -11,20 +11,17 @@ Baseline: Reps vote yes for bills sponsored by the same party
 '''
 
 name = "Baseline"
-rep_id = '400003'
 
 def baseline(person, debug=1):
-    rep_data = load_json('representatives')[rep_id]
+    rep_data = load_json('representatives')[person]
     rep_party = (rep_data['current_role'])['party']
     path= "all_no_summary_linear_"
     #using data from all_no_summary_linear experiment coz data for all reps is generated 
 
-    data_set_train = json.loads(open('data_set/'+path+'train/'+str(person)).read()) # Ugly but short way to open training data
     data_set_test = json.loads(open('data_set/'+path+'test/'+str(person)).read()) # Ugly but short way to open test data
-    train_data_points = data_set_train['data']
-    test_data_points = data_set_train['data']
-    data_points= train_data_points+test_data_points #concatenating train and test datasets
-    dataset_length= len(data_points)
+    test_data_points = data_set_test['data']
+    data_points = test_data_points #concatenating train and test datasets
+    dataset_length = len(data_points)
 
     numerrors=0
     numfalseyes=0
@@ -52,6 +49,7 @@ def baseline(person, debug=1):
             if predictedVote==0:
                 numerrors=numerrors+1
                 numfalseno = numfalseno+1
+
     errorrate= float(numerrors)/float(dataset_length)*100
     accuracy= float(100)- errorrate
     print
