@@ -6,12 +6,12 @@ from gen_feature_data import load_json
 '''
 Generic experiment with no summary features.
 '''
-
+    
 name = "summary"
-rep_id = '400003'
+rep_id = '400404'
 rep_data = load_json('representatives')[rep_id]
 
-config.features_to_ignore = ['bill_feature_set']
+config.features_to_ignore = []
 config.force_preprocess = True
 config.use_sparse_data = True
 
