@@ -29,24 +29,3 @@ stats = svm.svmLearnAll(C=.01, gamma=0.00, kernel='linear', experiment_name=name
 
 
 print "Done with all reps"
-f = open('experiment_results/'+name+'.json', 'w')
-f.write(json.dumps(stats))
-f.close()
-
-raw_input("Press Enter to continue... \nAbout to write .csv. Make sure to close the results file if you have it open.")
-
-# Format stats for excel:
-f = open('experiment_results/'+name+'.csv', 'w')
-
-#Write headers:
-for stat_name in stats[stats.keys()[0]]:
-    f.write(','+stat_name)
-f.write('\n')
-#Write stats
-for rep_id in stats:
-    f.write(str(rep_id))
-    for stat in stats[rep_id]:
-        f.write(','+str(stats[rep_id][stat]))
-    f.write('\n')
-
-f.close()

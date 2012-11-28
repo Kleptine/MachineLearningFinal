@@ -13,7 +13,6 @@ Note: only runs on 20 for now
 name = "all_with_summary"
 
 config.features_to_ignore = []
-config.force_preprocess = True
 config.use_sparse_data = True
 config.normalize_data = False
 config.normalize_type = 'unit_length' # Other valid option: 'center' (centers/scales distribution around zero)
