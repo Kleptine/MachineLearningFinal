@@ -29,8 +29,8 @@ gen_feature_data.genAllExperimentData(experiment_name=name) #*******************
 
 #try the C values in Cs for each kernel in kernels
 kernels= ['linear']
-Cs= [0.1, 0.3, 0.5, 0.7, 0., 1.2, 2.5, 3.6,10]
-stats = svm.svmLearnAll(C=.01, gamma=0.00, kernel='linear', experiment_name=name, debug=3, rep_max=25,Clist=Cs,kernelList=kernels)
+Cs= [0.1, 0.3, 0.5, 0.7, 1.2, 2.5, 3.6,10]
+stats = svm.svmLearnAll(C=.01, gamma=0.00, kernel='linear', experiment_name=name, debug=3, rep_max=2,Clist=Cs,kernelList=kernels)
 
 
 print "Done with all reps"

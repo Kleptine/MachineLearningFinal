@@ -25,7 +25,7 @@ gen_feature_data.genAllExperimentData(experiment_name=name)
 # Train the SVM and print results
 # TODO(john): Return results in such a way that we can analyze multiple reps
 # 	or plug it into excel or something.
-stats = svm.svmLearnAll(C=.01, gamma=0.00, kernel='linear', experiment_name=name, debug=1, rep_max=20)
+stats = svm.svmLearnAll(C=.01, gamma=0.00, kernel='linear', experiment_name=name, debug=1, rep_max=430)
 
 
 print "Done with all reps"

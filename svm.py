@@ -200,7 +200,8 @@ def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main',
                 stats.update(train_stats)
                 stats.update(validation_stats)
                 svmstats[acc] = (stats, C)
-        (bestAccuracy,bestC)=(heapq.nlargest(1,svmstats))[0]
+        print svmstats
+        bestAccuracy=(heapq.nlargest(1,svmstats.keys()))[0]
         (bestStats,bestC)= svmstats.get(bestAccuracy)
         if debug >= 2:
             print "best C Value for SVM is " + str(C)
