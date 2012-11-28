@@ -92,6 +92,10 @@ def getTrainingData(rep_id):
     '''
     return getData(rep_id, 'rep_votes_train', preprocess_data=None)
 
+def getValidationData(rep_id):
+    pre_data = json.loads(open('preprocess_data/'+rep_id).read())
+    return getData(rep_id, 'rep_votes_validation', preprocess_data=pre_data)
+
 
 def getTestingData(rep_id):
     '''
@@ -126,6 +130,29 @@ def genExperimentData(rep_id, experiment_name, debug=2):
         f = open(train_path, 'w')
         f.write(json.dumps(train))
         f.close()
+
+
+    if config.validate:
+        if debug >= 2:
+            print   
+
+            print ' ---- Generating Validation Data ---- '
+        
+        # Load the cached vectors if they exist, otherwise generate them and save them
+        validation_path = 'data_set/'+experiment_name+'_validation/'+rep_id
+        if os.path.exists(validation_path) and not config.force_generate_features:
+            if debug >= 1: print 'Pass. Using '+validation_path+' validation data.'
+        else:
+            # Get our training data
+            validation = getValidationData(rep_id)
+
+            # Create vector directory to save if necessary
+            if not os.path.exists('data_set/'+experiment_name+'_validation'):
+                os.makedirs('data_set/'+experiment_name+'_validation')
+
+            f = open(validation_path, 'w')
+            f.write(json.dumps(validation))
+            f.close()
         
     if debug >= 2:
         print
