@@ -29,13 +29,12 @@ def getVoteOutcome(option):
     raise "ERROR: ABSTAIN VOTE COUNTED"
 
 
-def genDataset(person, data_set):
+def genDataset(person, data_set,mcnemar=False):
     '''
         Generate the data to plug into the SVM
     '''
-
     data_points = data_set['data']
-    
+    bills=[]
     traindata=[]
     data_labels=[]
     for point in data_points:
@@ -43,7 +42,11 @@ def genDataset(person, data_set):
         voteobj= (point['vote_obj'])
         label= getVoteOutcome(voteobj['option'])
         data_labels.append(label)
-    return (traindata, data_labels)
+        bills.append((point['bill'])['number'])
+    if mcnemar:
+        return (traindata, data_labels,bills)
+    else:
+        return (traindata, data_labels)
 
 
 def trainSVM(person,C,gamma, kernel, training_data_set, debug=2):
@@ -71,7 +74,7 @@ def trainSVM(person,C,gamma, kernel, training_data_set, debug=2):
 
 
     # Convert to sparse representation if requested
-    if config.use_sparse_data:
+    if config.use_sparse_data and debug>=2:
         print "Booyy, we makin this sparse!"
         Xtrain =scipy.sparse.csr_matrix(Xtrain)
     if config.classifier==0:
@@ -95,13 +98,16 @@ def trainSVM(person,C,gamma, kernel, training_data_set, debug=2):
     return (classifier, stats)
 
 
-def testSVM(person, classifier, test_data_set, debug=2):
+def testSVM(person, classifier, test_data_set, debug=2, mcnemar=False):
     '''
         Args:
             debug: How much info to print: 0=none, 1=minimal, 2=all
     '''
     # Get our data and our classes
-    (data, labels) = genDataset(person, test_data_set)
+    if mcnemar:
+        (data, labels,bills) = genDataset(person, test_data_set, mcnemar)
+    else:
+        (data, labels) = genDataset(person, test_data_set)
 
     test_data_length= len(data)
     if debug >= 2: print "Test Data Length: "+str(test_data_length)
@@ -119,7 +125,7 @@ def testSVM(person, classifier, test_data_set, debug=2):
     if config.validate:
         if debug >= 2: print "Testing SVM on Validation Set "
     else:
-         if debug >= 2: print "Testing SVM Classiier"
+         if debug >= 2: print "Testing SVM Classifier on test set"
     prediction= classifier.predict(test_data)
 
     if len(prediction)!=test_data_length:
@@ -129,7 +135,7 @@ def testSVM(person, classifier, test_data_set, debug=2):
 
     # Grade our results:
     stats = {}  # Dictionary to store statistics
-
+    badpredict=[]
     numerrors=0
     numfalseyes=0
     numfalseno=0
@@ -138,10 +144,14 @@ def testSVM(person, classifier, test_data_set, debug=2):
             if prediction[i]==1:
                 numerrors=numerrors+1
                 numfalseyes = numfalseyes+1
+                if mcnemar:
+                    badpredict.append(bills[i])
         else:
             if prediction[i]==0:
                 numerrors=numerrors+1
                 numfalseno = numfalseno+1
+                if mcnemar:
+                    badpredict.append(bills[i])
     errorrate= float(numerrors)/float(test_data_length)*100
     accuracy= float(100)- errorrate
     if debug >= 2: print "Number of errors: "+str(numerrors)
@@ -155,6 +165,8 @@ def testSVM(person, classifier, test_data_set, debug=2):
     stats['Test False Positives'] = numfalseyes
     stats['Test False Negatives'] = numfalseno
     stats['Test Size'] = str(test_data_length)
+    if mcnemar:
+        stats['WrongPredictions'] = badpredict
 
 
     # Print out the most heavily weight features (only defined for a linear kernel)
@@ -178,7 +190,7 @@ def testSVM(person, classifier, test_data_set, debug=2):
 
 
 
-def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=2,Clist=[1.0],kernelList=['linear']):
+def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=0,Clist=[1.0],kernelList=['linear'],mcnemar=False):
     print 'data_set/'+experiment_name+'_train/'+str(person)
     data_set_train = json.loads(open('data_set/'+experiment_name+'_train/'+str(person)).read()) # Ugly but short way to open training data
     data_set_validation=[]
@@ -189,23 +201,26 @@ def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main',
         print ' ---- Training / Classifying ---- '
 
     if config.validate:
-        svmstats={}
+        classacc={}
         data_set_validation = json.loads(open('data_set/'+experiment_name+'_validation/'+str(person)).read()) # Ugly but short way to open test data
         for kernelval in kernelList:
             for Cvalidate in Clist: #change
                 classifier, train_stats = trainSVM(person, Cvalidate, gamma, kernelval, data_set_train, debug)
-                validation_stats = testSVM(person, classifier, data_set_validation, debug)
+                validation_stats = testSVM(person, classifier, data_set_validation, debug,mcnemar=False)
                 acc=(validation_stats['Test Accuracy'])
-                stats = {}
-                stats.update(train_stats)
-                stats.update(validation_stats)
-                svmstats[acc] = (stats, C)
-        print svmstats
-        bestAccuracy=(heapq.nlargest(1,svmstats.keys()))[0]
-        (bestStats,bestC)= svmstats.get(bestAccuracy)
-        if debug >= 2:
-            print "best C Value for SVM is " + str(C)
-        return bestStats
+                classacc[acc] = (classifier, Cvalidate, train_stats)
+        bestAccuracy=(heapq.nlargest(1,classacc.keys()))[0]
+        (bestclassifier,bestC,besttrain_stats)= classacc.get(bestAccuracy)
+        if debug >= 1:
+            print "best C Value for SVM is " + str(bestC)
+        test_stats = testSVM(person, bestclassifier, data_set_test, debug,mcnemar=mcnemar)
+        
+        stats={}
+        stats.update(besttrain_stats)
+        stats.update(test_stats)
+        stats["Best C"]=str(bestC)
+
+        return stats
 
 
     else:
@@ -214,11 +229,11 @@ def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main',
         stats = {}
         stats.update(train_stats)
         stats.update(test_stats)
-
+        stats["C Value"]=str(C)
         return stats
 
 
-def svmLearnAll(C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=2, rep_max=None, Clist=[1.0],kernelList=['kernel']):
+def svmLearnAll(C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=2, rep_max=None, Clist=[1.0],kernelList=['kernel'],mcnemar=False):
     personlist = json.loads(open('representatives').read())
     if rep_max == None: 
         rep_max = len(personlist.keys())
@@ -233,7 +248,7 @@ def svmLearnAll(C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debu
         print '====================================='
         print '     '+rep_id+'    '+str(count)+'/'+str(len(personlist))
         print
-        stats = svmLearn(rep_id, C=C, gamma=gamma, kernel=kernel, experiment_name=experiment_name, debug=debug, Clist=Clist, kernelList=kernelList)
+        stats = svmLearn(rep_id, C=C, gamma=gamma, kernel=kernel, experiment_name=experiment_name, debug=debug, Clist=Clist, kernelList=kernelList,mcnemar=mcnemar)
         all_stats[rep_id] = stats
 
         count += 1
