@@ -12,7 +12,7 @@ Baseline: Reps vote yes for bills sponsored by the same party
 
 name = "Baseline"
 
-def baseline(person, debug=1):
+def baseline(person, debug=1,mcnemar=False):
     rep_data = load_json('representatives')[person]
     rep_party = (rep_data['current_role'])['party']
     path= "all_no_summary_linear_"
@@ -20,7 +20,7 @@ def baseline(person, debug=1):
 
     data_set_test = json.loads(open('data_set/'+path+'test/'+str(person)).read()) # Ugly but short way to open test data
     test_data_points = data_set_test['data']
-    data_points = test_data_points #concatenating train and test datasets
+    data_points = test_data_points #not concatenating train and test datasets
     dataset_length = len(data_points)
 
     numerrors=0
@@ -28,8 +28,10 @@ def baseline(person, debug=1):
     numfalseno=0
 
     stats={}
-    
+    badpredict=[]
+
     for point in data_points:
+        bill_number= ((point['bill'])['number'])
         sponsor_party=((point['bill'])['sponsor_role'])['party']
         #print sponsor_party
         voteobj= (point['vote_obj'])
@@ -43,10 +45,14 @@ def baseline(person, debug=1):
         #evaluate performance
         if vote==0:
             if predictedVote==1:
+                if mcnemar:
+                    badpredict.append(bill_number)
                 numerrors=numerrors+1
                 numfalseyes = numfalseyes+1
         else:
             if predictedVote==0:
+                if mcnemar:
+                    badpredict.append(bill_number)
                 numerrors=numerrors+1
                 numfalseno = numfalseno+1
 
@@ -68,10 +74,12 @@ def baseline(person, debug=1):
     stats['Total False Positives'] = numfalseyes
     stats['Total False Negatives'] = numfalseno
     stats['Dataset Size'] = str(dataset_length)
+    if mcnemar:
+        stats['WrongPredictions'] = badpredict
     return stats
 
 
-def baselineAll( experiment_name='baseline', debug=1, rep_max=None):
+def baselineAll( experiment_name='baseline', debug=1, rep_max=None,mcnemar=False):
     personlist = json.loads(open('representatives').read())
     if rep_max == None: 
         rep_max = len(personlist.keys())
@@ -86,7 +94,7 @@ def baselineAll( experiment_name='baseline', debug=1, rep_max=None):
         print '====================================='
         print '     '+rep_id+'    '+str(count)+'/'+str(len(personlist))
         print
-        stats = baseline(rep_id, debug=debug)
+        stats = baseline(rep_id, debug=debug,mcnemar=mcnemar)
         all_stats[rep_id] = stats
 
         count += 1
@@ -110,7 +118,20 @@ def baselineAll( experiment_name='baseline', debug=1, rep_max=None):
 
 def writeResults():
     name = "all__baseline"
-    stats= baselineAll()
+    stats= baselineAll(mcnemar=True) #GENERATING MCNEMAR DATA
+
+
+    mcnemardata={}
+
+    for (rep_id,repstats) in stats.items():
+        if ('WrongPredictions') in repstats.keys():
+            bills=repstats['WrongPredictions']
+            mcnemardata[rep_id]=bills
+            del(repstats['WrongPredictions'])
+
+    mcn= open("mcnemar_data/"+name,'w')
+    mcn.write(json.dumps(mcnemardata))
+    mcn.close()
 
     print "Done with all reps"
     f = open('experiment_results/'+name+'.json', 'w')
