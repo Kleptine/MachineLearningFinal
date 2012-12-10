@@ -10,6 +10,7 @@ import config
 import scipy.sparse
 import time
 import sklearn.preprocessing as preprocessing
+import pickle
 
 '''
 When training an SVM with the Radial Basis Function (RBF) kernel, two parameters must be considered: C and gamma. 
@@ -168,7 +169,25 @@ def testSVM(person, classifier, test_data_set, debug=2):
 
     return stats
 
+def loadSVMs(experiment_name):
+    ''' Loads all SVM's under this experiment.
 
+    '''
+
+    representatives = json.loads(open('representatives').read())
+
+    svms = []
+
+    for rep in representatives:
+        svms.append(loadSVM(experiment_name, rep))
+
+    return svms
+
+def loadSVM(experiment_name, person):
+    if not os.path.exists('models/'+experiment_name+'/'+person):
+        print "No model for representative: "+person
+
+    return pickle.load(open('models/'+experiment_name+'/'+person))
 
 
 def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=2):
@@ -182,6 +201,13 @@ def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main',
 
     classifier, train_stats = trainSVM(person, C, gamma, kernel, data_set_train, debug)
     test_stats = testSVM(person, classifier, data_set_test, debug)
+
+    # We also want to save off the classfier for later use (so we don't have to train again)
+    if not os.path.exists('models/'+experiment_name):
+        os.makedirs('models/'+experiment_name)
+
+    classifierFile = open('models/'+experiment_name+'/'+person)
+    pickle.dump(classifier, classifierFile)
 
     stats = {}
     stats.update(train_stats)
