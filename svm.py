@@ -43,6 +43,10 @@ def genDataset(person, data_set,mcnemar=False):
         label= getVoteOutcome(voteobj['option'])
         data_labels.append(label)
         bills.append((point['bill'])['number'])
+    if data_labels==[]:
+        print "no data labels"
+    if traindata==[]:
+        print "no data labels"
     if mcnemar:
         return (traindata, data_labels,bills)
     else:
@@ -58,6 +62,11 @@ def trainSVM(person,C,gamma, kernel, training_data_set, debug=2):
 
     Xtrain=np.array(train_data)
     Ytrain=np.array(data_labels)
+    if len(Xtrain)!=0:
+        print "Xtrain is not empty"
+    if len(Ytrain)!=0:
+        print "Ytrain is not empty"
+        print len(Ytrain)
 
     if debug >= 1: print "Sample length: " + str(len(Xtrain))
     if debug >= 2: print "Training SVM for C = "+ str(C) +", kernel= "+kernel

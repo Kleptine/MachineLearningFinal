@@ -30,7 +30,7 @@ gen_feature_data.genAllExperimentData(experiment_name=name) #*******************
 #try the C values in Cs for each kernel in kernels
 kernels= ['linear']
 Cs= [0.001,0.01,0.003]
-stats = svm.svmLearnAll(C=.01, gamma=0.00, kernel='linear', experiment_name=name, debug=1, rep_max=3,Clist=Cs,kernelList=kernels,mcnemar=True)
+stats = svm.svmLearnAll(C=.01, gamma=0.00, kernel='linear', experiment_name=name, debug=1, rep_max=None,Clist=Cs,kernelList=kernels,mcnemar=True)
 
 mcnemardata={}
 
