@@ -10,7 +10,12 @@
 # Summary disabled by default
 features_to_ignore = ['summary_word_bag']
 
-
+#0 for svm 
+#1 for decision tree 
+classifier= 0 
+ 
+#whether we should use validation set
+validate= False
 # Do we want to ignore abstaining votes
 remove_abstaining_votes = True      
 

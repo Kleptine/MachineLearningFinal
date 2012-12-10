@@ -280,7 +280,7 @@ def build_summary_map():
     Args:
         train_percent: The percentage of train to test.
 '''
-def split_train_test(train_percent):
+def split_train_test(train_percent,validate=False):
     reps = json.loads(open('representatives').read())
     for i, rep in enumerate(reps):
         if i % 30 == 0: print i
@@ -290,17 +290,42 @@ def split_train_test(train_percent):
         random.shuffle(votes)
 
         index = int(train_percent * len(votes))
-
-        trainVotes = votes[:index]
+        train_validation_set= votes[:index]
+        validationVotes= []
         testVotes = votes[index:len(votes)]
+
+        if validate:
+            #trainVotes= train_validation_set
+            (trainVotes,validationVotes) =  split_train_validation (train_validation_set, 0.80) #train/validation percentage
+        else:
+            trainVotes= train_validation_set  
 
         f = open('rep_votes_train/'+rep, 'w')
         f.write(json.dumps(trainVotes))
         f.close()
+        
+        if validate:
+            f = open('rep_votes_validation/'+rep, 'w')
+            f.write(json.dumps(validationVotes))
+            f.close()
 
         f = open('rep_votes_test/'+rep, 'w')
         f.write(json.dumps(testVotes))
         f.close()
 
 
+# slits votes into a train and validation set and train/validate = train_validate_percent
+def split_train_validation(voteset, train_validate_percent):
+        random.shuffle(voteset)
+
+        index = int(train_validate_percent * len(votes))
+
+        trainVotes = voteset[:index]
+        validationVotes = voteset[index:len(voteset)]
+
+        return (trainVotes,validationVotes)
+
+
+
 cleanReps()
+split_train_test(0.70,True)
