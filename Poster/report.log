@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  11 DEC 2012 16:21
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  11 DEC 2012 17:31
 entering extended mode
 **report.tex
 (D:\Ben\Documents\MachineLearningFinal\Poster\report.tex
@@ -430,12 +430,12 @@ Package pdftex.def Info: pie_chart_1.png used on input line 96.
 (pdftex.def)             Requested size: 223.83022pt x 163.05095pt.
 
 [4 <D:/Ben/Documents/MachineLearningFinal/Poster/c_values.png>]
-<accuracy_comparison.png, id=24, 585.68813pt x 299.61937pt>
-File: accuracy_comparison.png Graphic file (type png)
+<accuracy_comparison2.png, id=24, 618.05907pt x 345.54094pt>
+File: accuracy_comparison2.png Graphic file (type png)
 
-<use accuracy_comparison.png>
-Package pdftex.def Info: accuracy_comparison.png used on input line 103.
-(pdftex.def)             Requested size: 469.0pt x 239.93355pt.
+<use accuracy_comparison2.png>
+Package pdftex.def Info: accuracy_comparison2.png used on input line 103.
+(pdftex.def)             Requested size: 469.0pt x 262.21312pt.
 
 <mcnemar_results.png, id=25, 902.6222pt x 656.4525pt>
 File: mcnemar_results.png Graphic file (type png)
@@ -455,17 +455,18 @@ Underfull \vbox (badness 2772) has occurred while \output is active []
 
  [5 <D:/Ben/Documents/MachineLearningFinal/Poster/pie_chart_1.png> <D:/Ben/Docu
 ments/MachineLearningFinal/Poster/mcnemar_results.png>]
-<size_accuracy.png, id=32, 617.30624pt x 342.5297pt>
-File: size_accuracy.png Graphic file (type png)
- <use size_accuracy.png>
-Package pdftex.def Info: size_accuracy.png used on input line 124.
-(pdftex.def)             Requested size: 469.0pt x 260.24687pt.
+<size_accuracy2.png, id=32, 617.30624pt x 341.77687pt>
+File: size_accuracy2.png Graphic file (type png)
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+<use size_accuracy2.png>
+Package pdftex.def Info: size_accuracy2.png used on input line 124.
+(pdftex.def)             Requested size: 469.0pt x 259.67488pt.
 
- [6 <D:/Ben/Documents/MachineLearningFinal/Poster/accuracy_comparison.png> <D:/
-Ben/Documents/MachineLearningFinal/Poster/data_distribution.png>] [7 <D:/Ben/Do
-cuments/MachineLearningFinal/Poster/size_accuracy.png>]
+Underfull \vbox (badness 1430) has occurred while \output is active []
+
+ [6 <D:/Ben/Documents/MachineLearningFinal/Poster/accuracy_comparison2.png> <D:
+/Ben/Documents/MachineLearningFinal/Poster/data_distribution.png>] [7 <D:/Ben/D
+ocuments/MachineLearningFinal/Poster/size_accuracy2.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8]
@@ -474,7 +475,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 ] (D:\Ben\Documents\MachineLearningFinal\Poster\report.aux) ) 
 Here is how much of TeX's memory you used:
  2332 strings out of 494045
- 28702 string characters out of 3145975
+ 28712 string characters out of 3145975
  86520 words of memory out of 3000000
  5603 multiletter control sequences out of 15000+200000
  11390 words of font info for 43 fonts, out of 3000000 for 9000
@@ -488,7 +489,7 @@ iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKT
 eX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 
 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.
 9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on report.pdf (9 pages, 262843 bytes).
+Output written on report.pdf (9 pages, 264046 bytes).
 PDF statistics:
  73 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
