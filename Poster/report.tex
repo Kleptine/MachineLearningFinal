@@ -1,4 +1,5 @@
 \documentclass[11pt,letterpaper,twocolumn]{article}
+\setlength{\columnsep}{1cm}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -69,7 +70,7 @@ Feature set:
 
 \subsection{Model Selection}
 
-The machine learning model we chose to use for representative prediction tasks was a support vector machine.
+The machine learning model we chose to use for representative prediction tasks was a support vector machine. We treated each representative as a separate prediction task. Thus we had a separate data set for each member of the House. We split each data set into training, validation and testing sets. Thirty percent of the data for each member was used for testing, the remaining seventy percent was split between training and validation, with eighty percent going to training and twenty percent to validation. Then for each representative we trained, and tuned a separate support vector machine, using the validation set to pick the best C value from five options $[0.0001, 0.001, 0.01, 0.05, 0.1]$. Thus we had 430 separate support vector machines.
 
 \subsection{Statistical Analysis}
 
