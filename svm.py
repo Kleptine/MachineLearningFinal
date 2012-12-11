@@ -10,6 +10,7 @@ import config
 import scipy.sparse
 import time
 import sklearn.preprocessing as preprocessing
+import pickle
 import heapq
 
 '''
@@ -196,7 +197,25 @@ def testSVM(person, classifier, test_data_set, debug=2, mcnemar=False):
 
     return stats
 
+def loadSVMs(experiment_name):
+    ''' Loads all SVM's under this experiment.
 
+    '''
+
+    representatives = json.loads(open('representatives').read())
+
+    svms = {}
+
+    for rep in representatives:
+        svms[rep] = loadSVM(experiment_name, rep)
+
+    return svms
+
+def loadSVM(experiment_name, person):
+    if not os.path.exists('models/'+experiment_name+'/'+person):
+        print "No model for representative: "+person
+
+    return pickle.load(open('models/'+experiment_name+'/'+person))
 
 
 def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=0,Clist=[1.0],kernelList=['linear'],mcnemar=False):
@@ -209,6 +228,24 @@ def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main',
         print
         print ' ---- Training / Classifying ---- '
 
+    classifier, train_stats = trainSVM(person, C, gamma, kernel, data_set_train, debug)
+    test_stats = testSVM(person, classifier, data_set_test, debug)
+
+    # We also want to save off the classfier for later use (so we don't have to train again)
+    if not os.path.exists('models/'+experiment_name):
+        os.makedirs('models/'+experiment_name)
+
+    classifierFile = open('models/'+experiment_name+'/'+person, 'w')
+    pickle.dump(classifier, classifierFile)
+
+    stats = {}
+    stats.update(train_stats)
+    stats.update(test_stats)
+
+    return stats
+
+
+def svmLearnAll(C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debug=2, rep_max=None):
     if config.validate:
         classacc={}
         data_set_validation = json.loads(open('data_set/'+experiment_name+'_validation/'+str(person)).read()) # Ugly but short way to open test data
@@ -277,6 +314,11 @@ def svmLearnAll(C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debu
     print
 
     return all_stats
+
+def predictSingle(test_bill, model=None, models=[]):
+    ''' Takes a list or single model and returns each's prediction on the the single bill. '''
+    #if model != None:
+    pass
 
 
 # Call this from an experiment such as exp__no_summary.py

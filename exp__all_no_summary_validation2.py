@@ -22,7 +22,7 @@ config.validate= True
 
 
 # Generate our feature vectors 
-gen_feature_data.genAllExperimentData(experiment_name=name) #********************************************************************** seeeeeee)
+gen_feature_data.genAllExperimentData(experiment_name=name)
 
 
 #Train the SVM and print results

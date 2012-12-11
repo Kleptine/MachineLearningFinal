@@ -139,7 +139,6 @@ def getVotes (person= None):
 def write_bills():
 
     conn = httplib.HTTPConnection('www.govtrack.us')
-    
 
     # Get all votes on bills voted on for passage:
     conn.request('GET', '/api/v1/vote/?category=passage&limit='+str(limit))
