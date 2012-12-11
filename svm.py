@@ -204,10 +204,10 @@ def loadSVMs(experiment_name):
 
     representatives = json.loads(open('representatives').read())
 
-    svms = []
+    svms = {}
 
     for rep in representatives:
-        svms.append(loadSVM(experiment_name, rep))
+        svms[rep] = loadSVM(experiment_name, rep)
 
     return svms
 
@@ -235,7 +235,7 @@ def svmLearn(person, C=1.0, gamma=0.0 , kernel='linear', experiment_name='main',
     if not os.path.exists('models/'+experiment_name):
         os.makedirs('models/'+experiment_name)
 
-    classifierFile = open('models/'+experiment_name+'/'+person)
+    classifierFile = open('models/'+experiment_name+'/'+person, 'w')
     pickle.dump(classifier, classifierFile)
 
     stats = {}
@@ -314,6 +314,11 @@ def svmLearnAll(C=1.0, gamma=0.0 , kernel='linear', experiment_name='main', debu
     print
 
     return all_stats
+
+def predictSingle(test_bill, model=None, models=[]):
+    ''' Takes a list or single model and returns each's prediction on the the single bill. '''
+    #if model != None:
+    pass
 
 
 # Call this from an experiment such as exp__no_summary.py
