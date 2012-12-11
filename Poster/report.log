@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  11 DEC 2012 12:23
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  11 DEC 2012 16:21
 entering extended mode
 **report.tex
 (D:\Ben\Documents\MachineLearningFinal\Poster\report.tex
@@ -347,39 +347,47 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
+(C:\Users\Ben\AppData\Roaming\MiKTeX\2.9\tex\latex\wrapfig\wrapfig.sty
+\wrapoverhang=\dimen114
+\WF@size=\dimen115
+\c@WF@wrappedlines=\count100
+\WF@box=\box28
+\WF@everypar=\toks22
+Package: wrapfig 2003/01/31  v 3.6
+)
 (D:\Ben\Documents\MachineLearningFinal\Poster\report.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
 
 (C:\Users\Ben\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count100
-\scratchdimen=\dimen114
-\scratchbox=\box28
-\nofMPsegments=\count101
-\nofMParguments=\count102
-\everyMPshowfont=\toks22
-\MPscratchCnt=\count103
-\MPscratchDim=\dimen115
-\MPnumerator=\count104
-\makeMPintoPDFobject=\count105
-\everyMPtoPDFconversion=\toks23
+\scratchcounter=\count101
+\scratchdimen=\dimen116
+\scratchbox=\box29
+\nofMPsegments=\count102
+\nofMParguments=\count103
+\everyMPshowfont=\toks23
+\MPscratchCnt=\count104
+\MPscratchDim=\dimen117
+\MPnumerator=\count105
+\makeMPintoPDFobject=\count106
+\everyMPtoPDFconversion=\toks24
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 13.
+LaTeX Font Info:    Try loading font information for U+msa on input line 14.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 13.
+LaTeX Font Info:    Try loading font information for U+msb on input line 14.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -393,45 +401,82 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
-Underfull \hbox (badness 1365) in paragraph at lines 33--34
+Underfull \hbox (badness 1365) in paragraph at lines 34--35
 []\OT1/cmr/m/n/10.95 What ma-chine learn-ing al-go-rithms are
  []
 
 
-Underfull \hbox (badness 1331) in paragraph at lines 43--44
+Underfull \hbox (badness 1331) in paragraph at lines 44--45
 \OT1/cmr/m/n/10.95 Gov-track's database we pulled data about
  []
 
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 48.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 51.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 48.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 51.
  [2] [3]
-<accuracy_comparison.png, id=16, 868.74562pt x 632.3625pt>
+<c_values.png, id=16, 901.86937pt x 655.69969pt>
+File: c_values.png Graphic file (type png)
+ <use c_values.png>
+Package pdftex.def Info: c_values.png used on input line 87.
+(pdftex.def)             Requested size: 223.83022pt x 162.7339pt.
+
+<pie_chart_1.png, id=18, 901.11656pt x 656.4525pt>
+File: pie_chart_1.png Graphic file (type png)
+ <use pie_chart_1.png>
+Package pdftex.def Info: pie_chart_1.png used on input line 96.
+(pdftex.def)             Requested size: 223.83022pt x 163.05095pt.
+
+[4 <D:/Ben/Documents/MachineLearningFinal/Poster/c_values.png>]
+<accuracy_comparison.png, id=24, 585.68813pt x 299.61937pt>
 File: accuracy_comparison.png Graphic file (type png)
 
 <use accuracy_comparison.png>
-Package pdftex.def Info: accuracy_comparison.png used on input line 84.
-(pdftex.def)             Requested size: 469.75499pt x 341.94347pt.
+Package pdftex.def Info: accuracy_comparison.png used on input line 103.
+(pdftex.def)             Requested size: 469.0pt x 239.93355pt.
 
-Overfull \hbox (0.75499pt too wide) in paragraph at lines 84--85
-[][] 
- []
+<mcnemar_results.png, id=25, 902.6222pt x 656.4525pt>
+File: mcnemar_results.png Graphic file (type png)
 
-[4] [5 <D:/Ben/Documents/MachineLearningFinal/Poster/accuracy_comparison.png>]
+<use mcnemar_results.png>
+Package pdftex.def Info: mcnemar_results.png used on input line 110.
+(pdftex.def)             Requested size: 223.83022pt x 162.7805pt.
+
+<data_distribution.png, id=26, 901.11656pt x 655.69969pt>
+File: data_distribution.png Graphic file (type png)
+
+<use data_distribution.png>
+Package pdftex.def Info: data_distribution.png used on input line 117.
+(pdftex.def)             Requested size: 223.83022pt x 162.86397pt.
+
+Underfull \vbox (badness 2772) has occurred while \output is active []
+
+ [5 <D:/Ben/Documents/MachineLearningFinal/Poster/pie_chart_1.png> <D:/Ben/Docu
+ments/MachineLearningFinal/Poster/mcnemar_results.png>]
+<size_accuracy.png, id=32, 617.30624pt x 342.5297pt>
+File: size_accuracy.png Graphic file (type png)
+ <use size_accuracy.png>
+Package pdftex.def Info: size_accuracy.png used on input line 124.
+(pdftex.def)             Requested size: 469.0pt x 260.24687pt.
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [6]
-[7
+ [6 <D:/Ben/Documents/MachineLearningFinal/Poster/accuracy_comparison.png> <D:/
+Ben/Documents/MachineLearningFinal/Poster/data_distribution.png>] [7 <D:/Ben/Do
+cuments/MachineLearningFinal/Poster/size_accuracy.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [8]
+[9
 
 ] (D:\Ben\Documents\MachineLearningFinal\Poster\report.aux) ) 
 Here is how much of TeX's memory you used:
- 2240 strings out of 494045
- 27319 string characters out of 3145975
- 85319 words of memory out of 3000000
- 5520 multiletter control sequences out of 15000+200000
+ 2332 strings out of 494045
+ 28702 string characters out of 3145975
+ 86520 words of memory out of 3000000
+ 5603 multiletter control sequences out of 15000+200000
  11390 words of font info for 43 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  27i,7n,22p,1245b,221s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -443,9 +488,9 @@ iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKT
 eX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 
 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.
 9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on report.pdf (7 pages, 135002 bytes).
+Output written on report.pdf (9 pages, 262843 bytes).
 PDF statistics:
- 57 PDF objects out of 1000 (max. 8388607)
+ 73 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

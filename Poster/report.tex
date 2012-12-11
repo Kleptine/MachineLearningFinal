@@ -5,6 +5,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{wrapfig}
 \author{Ben Shulman}
 \begin{document}
 \title{Vote Prediction in the House of Representatives}
@@ -41,6 +42,8 @@ To address our first question we focused primarily on using support vector machi
 \subsection{Data}
 
 We took data from www.govtrack.us, a website promoting government transparency. From Govtrack's database we pulled data about all current representatives. We excluded five representatives from our experiment as there were problems with their information in the database, leaving us with 430 representatives. We used Govtrack's database to extract the voting records of these 430 representatives. For each representative we pulled all bills which were being voted on for passage which they had ever voted on. Each bill represented an example for a representative. The data from the database about each bill included information about the status of the bill; when it was introduced; congress number; when it was voted on; its title; and information about the sponsor of the bill such as name, district, and party. 
+
+A month after we pulled all the bills which the current members of the House had voted on we pulled the six which had been voted on for passage in that month. These bills we then used to predict if the bill would pass or not.
 
 \subsection{Feature Selection}
 Feature set:
@@ -80,11 +83,65 @@ To analyze the performance of our support vector machine models we compared them
 
 \section{Results}
 
-\begin{figure*}
-\includegraphics[width=6.5in]{accuracy_comparison.png}
+\begin{figure}
+\includegraphics[width=\columnwidth]{c_values.png}
+\caption{Hello}
+\end{figure}
+
+The results of tuning our support vector machines for each representative indicate that for most representatives a C value of 0.1 is the best. As can be seen in figure 1, the vast majority of optimized C values were 0.1 with small numbers of representatives' optimized C values being 0.05, 0.01, and 0.001.
+
+The average accuracy of the optimized support vector machines on each representative's test set was 84.62\%, while the baseline model had an average accuracy of 80.80\% on those same test sets. Thus the optimized support vector machine had an average accuracy 3.82\% higher than that of the baseline model.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{pie_chart_1.png}
+\caption{A pie chart comparing for how many representatives the support vector machine performs better than the baseline, how many each model performs approximately the same and for how many the baseline performs better}
+\end{figure}
+
+For 355 of the 430 representatives the support vector machine did as well as or better than the baseline. Of those 355 representatives, only eighty five had approximately equal results between the optimized support vector machine and the baseline hypothesis (Figure 2).
+
+\begin{figure*}[t]
+\includegraphics[width=\linewidth]{accuracy_comparison.png}
 \caption{A comparison of the baseline accuracy and optimized SVM accuracy sorted by representative such that baseline accuracy is increasing as representative number increases.}
 \end{figure*}
-In
+
+As can be seen in Figure 3, the support vector machine's performance was particularly good in comparison to the baseline for representatives where the baseline had relatively poor test accuracy. For representatives on which the baseline test accuracy was higher the optimized support vector machines fell more into line with the baseline, typically doing better than it.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{mcnemar_results.png}
+\caption{A pie chart showing the cumulative results of McNemar's Tests on each representative. "SVM" indicates the null hypothesis was rejected and the SVM performed better, vice versa for "Baseline" and "Same" indicates the null hypothesis could not be reject.}
+\end{figure}
+
+The results of our statistical analysis of the baseline hypothesis and the optimized support vector machines  can be seen in Figure 4. The results are similarly encouraging to the observational results detailed above. Cumulatively, for 139 representatives we can reject the null hypothesis of the McNemar's Test with 95\% confidence and say that the optimized support vector machine is a better hypothesis as it performed better in these 139 cases. For 61 representatives the opposite was true and the null hypothesis was rejected in favor of the baseline model. Thus for more than twice as many representatives the optimized support vector machines are better with 95\% confidence. This indicates that overall the optimized support vector machine model was a better hypothesis than the baseline model.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{data_distribution.png}
+\caption{Histogram showing how many representatives have the number of votes within each bin.}
+\end{figure}
+
+We further examined our results to see how data sparseness could be affecting our results. As can be seen in Figure 5, for nearly a quarter of representatives have fewer than 500 votes each, giving us little data with which to work. Thus we were concerned that the amount of data we had for each representative may be affecting the performance of the baseline model and the support vector machine model.
+
+\begin{figure*}[t]
+\includegraphics[width=\linewidth]{size_accuracy.png}
+\caption{Comparison of test accuracies between baseline and optimized support vector machine, representatives sorted by number of votes. Linear trendlines included to show trends.}
+\end{figure*}
+
+In Figure 6, the performance of the baseline and the optimized support vector machines on the test sets can be seen, with representatives sorted by the number of votes we had for each, from smallest to largest. As can be seen by the trendlines, both models test accuracy decline slightly as the number of votes increases; however, the baseline accuracy decreases more than the optimized support vector machine. Further it can be seen that test accuracies appear to vary less as the number of votes increase.
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|} \hline
+Percent of House & Prediction \\ \hline
+0.565 & Pass \\ \hline
+0.588 & Pass\\ \hline
+0.586 & Pass\\ \hline
+0.574 & Pass\\ \hline
+0.804 & Pass\\ \hline
+0.591 & Pass\\ \hline
+\end{tabular}
+\caption{Table showing the ratio (percent) of the weighted sum of predicted "yea" votes to the weighted sum of predicted "nay" votes as well as whether passage was predicted.}
+\end{table}
+
+We did no thorough examination of predicting passage of bills. Due to the sparseness of our data (Figure 5) we used every bill that we could for training, validation and testing. That left us with six bills that had been voted on for passage in the month after we originally pulled our data. We then used our model for predicting bill passage on each of these six bills. As can be seen in Table 1, above, we correctly predicted that each bill passed. 
 
 \section{Discussion}
 
@@ -99,7 +156,7 @@ The text regression model takes the ideal point model and fits a training set to
 The ideal point topic model takes text of bills to come up with the topic of a bill and relates it to sentiment on the bill (Gerrish \& Blei, 2011).
 
 Our problem is far different. We do not limit our bills to roll call votes and instead of focusing on both the Senate and the House we look only at the House. Further we do more than predict individual votes, but also take our individual predicts and use them to predict bill passage. Gerrish and Blei used the text of bills to create various extended ideal point models to predict how a congressperson will vote. We do not use the ideal point model, or any of the machine learning techniques applied by Gerrish and Blei. Instead we use a support vector machine and metadata about bills, rather than bill text. Our problem is more general in its scope and has further applications to the general public and industry, as predicting bill passage could prove to be useful for  corporations and citizens. Further our approach is simpler, applying the commonly used support vector machines to small, computationally inexpensive feature vectors easily pulled from bill metadata.
-
+ 
 \section{Future Work}
 
 \section{Conclusion}
