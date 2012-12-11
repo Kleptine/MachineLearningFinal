@@ -1,5 +1,5 @@
 \documentclass[11pt,letterpaper,twocolumn]{article}
-\setlength{\columnsep}{1cm}
+\setlength{\columnsep}{0.75cm}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -34,7 +34,7 @@ We are specifically interested in two questions:
 \end{enumerate}
 
 \section{Algorithms and Methods}
-To address our first question we focused primarily on using support vector machines to predict how each Representative would vote. For each representative we trained, tuned using a validation set and tested a separate support vector machine. To compare the success of support vector machines in predicting representatives' votes we used a baseline hypothesis which predicted that if a representative was of the same party as the sponsor of the bill he or she would vote "Yes" or if not, would vote "No." To predict whether a bill would be passed or not we did not use a standard machine learning algorithm as we had already done the prediction part using the individual support vector machines that predicted representatives' votes. Instead we used a simple algorithm that took a sum of predicted votes, where each vote is weighted by the accuracy of the representative's support vector machine on the test set for that representative. 
+To address our first question we focused primarily on using support vector machines to predict how each Representative would vote. For each representative we trained, tuned using a validation set and tested a separate support vector machine. To compare the success of support vector machines in predicting representatives' votes we used a baseline hypothesis which predicted that if a representative was of the same party as the sponsor of the bill he or she would vote "Yea" or if not, would vote "Nay." To predict whether a bill would be passed or not we did not use a standard machine learning algorithm as we had already done the prediction part using the individual support vector machines that predicted representatives' votes. Instead we used a simple algorithm that took a sum of predicted votes, where each vote is weighted by the accuracy of the representative's support vector machine on the test set for that representative. 
 
 \section{Methodology}
 
@@ -70,18 +70,48 @@ Feature set:
 
 \subsection{Model Selection}
 
-The machine learning model we chose to use for representative prediction tasks was a support vector machine. We treated each representative as a separate prediction task. Thus we had a separate data set for each member of the House. We split each data set into training, validation and testing sets. Thirty percent of the data for each member was used for testing, the remaining seventy percent was split between training and validation, with eighty percent going to training and twenty percent to validation. Then for each representative we trained, and tuned a separate support vector machine, using the validation set to pick the best C value from five options $[0.0001, 0.001, 0.01, 0.05, 0.1]$. Thus we had 430 separate support vector machines.
+The machine learning model we chose to use for representative prediction tasks was a support vector machine. We treated each representative as a separate prediction task. Thus we had a separate data set for each member of the House. We split each data set into training, validation and testing sets. Thirty percent of the data for each member was used for testing, the remaining seventy percent was split between training and validation, with eighty percent going to training and twenty percent to validation. Then for each representative we trained, and tuned a separate support vector machine with a linear kernel, using the validation set to pick the best C value from five options $[0.0001, 0.001, 0.01, 0.05, 0.1]$. All support vector machine models were done in Python using the scikit-learn library. Thus we had 430 separate support vector machines. We tested each tuned support vector machine on the test set, recording the bills on which the support vector machine incorrectly predicted the House member's vote as well as the accuracy. We then tested our baseline model, which predicts that a representative will vote "yea" if he or she aligns with the same party as the bill sponsor and "nay" otherwise. 
+
+To predict the outcome of a vote on bill passage we created a model which combined our individual predictions of representatives' votes into a single prediction. To do this we used a simple model which used predictions for a given bill to compute a weighted sum of votes. Each vote was weighted by the accuracy of the optimized support vector machine on the representative's test set. The weighted sums of nay and yea were then compared to determine the outcome.
 
 \subsection{Statistical Analysis}
+
+To analyze the performance of our support vector machine models we compared them against our baseline hypothesis. We performed an individual McNemar's Test with a confidence interval of 95\% for every representative, resulting in 430 tests. Then to determine whether our optimized support vector machines were performing statistically better we compared the number of McNemar's Tests which determined that the optimized support vector machine had performed better against the number of tests which had determined our baseline to perform better with 95\% confidence.
+
+\section{Results}
+
+\begin{figure*}
+\includegraphics[width=6.5in]{accuracy_comparison.png}
+\caption{A comparison of the baseline accuracy and optimized SVM accuracy sorted by representative such that baseline accuracy is increasing as representative number increases.}
+\end{figure*}
+In
 
 \section{Discussion}
 
 \section{Related Work}
 
+The only work similar to ours as described here was conducted by Princeton researchers Garrish and Blei and described in their paper \textit{Predicting Legislative Roll Calls from Text}. Their work focuses upon the text of bills for which there were roll call votes, using only text to predict votes and their work spanned both the Senate and the House of Representatives (Gerrish \& Blei, 2011). They developed models for votes which extended the ideal point model from political science, which places a representative in space, this point being their ideal point, and bills in the same space (Gerrish \& Blei, 2011). The vote of the congressperson is a function of his or her ideal point and the location of the bill in the space. From this initial model they developed three models: The Bayesian ideal point model, ideal points with text regression and an ideal point topic model (Gerrish \& Blei, 2011). 
+
+The Bayesian model is a generative model for predicting votes. It uses the ideal point of the congressperson and the bill's ideal point, biased by a term which accounts for how much plitical division a bill has and applies a logistic regression with random effects to the result (Gerrish \& Blei, 2011). 
+
+The text regression model takes the ideal point model and fits a training set to it and then applies a regression model to it (Gerrish \& Blei, 2011).
+
+The ideal point topic model takes text of bills to come up with the topic of a bill and relates it to sentiment on the bill (Gerrish \& Blei, 2011).
+
+Our problem is far different. We do not limit our bills to roll call votes and instead of focusing on both the Senate and the House we look only at the House. Further we do more than predict individual votes, but also take our individual predicts and use them to predict bill passage. Gerrish and Blei used the text of bills to create various extended ideal point models to predict how a congressperson will vote. We do not use the ideal point model, or any of the machine learning techniques applied by Gerrish and Blei. Instead we use a support vector machine and metadata about bills, rather than bill text. Our problem is more general in its scope and has further applications to the general public and industry, as predicting bill passage could prove to be useful for  corporations and citizens. Further our approach is simpler, applying the commonly used support vector machines to small, computationally inexpensive feature vectors easily pulled from bill metadata.
+
 \section{Future Work}
 
 \section{Conclusion}
 
+\section*{Acknowledgments}
 
+We would like to thank Igor Labutov and Thorsten Joachims for their advice and guidance on this work. We would also like to thank the entire CS4780 course staff, Cornell University and Govtrack. 
+
+\pagebreak
+
+\section*{References}
+
+Gerrish, S. M., \& Blei, D. M. (2011). Predicting legislative roll calls from text. International Conference on Machine Learning
 
 \end{document}

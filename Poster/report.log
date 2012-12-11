@@ -1,9 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.31)  10 DEC 2012 15:13
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  11 DEC 2012 12:23
 entering extended mode
 **report.tex
-
-("C:\Users\Ben\Documents\Machine Learning\MachineLearningFinal\Poster\report.te
-x"
+(D:\Ben\Documents\MachineLearningFinal\Poster\report.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -349,8 +347,7 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
-("C:\Users\Ben\Documents\Machine Learning\MachineLearningFinal\Poster\report.au
-x")
+(D:\Ben\Documents\MachineLearningFinal\Poster\report.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
@@ -363,7 +360,8 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
- (C:\Users\Ben\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+
+(C:\Users\Ben\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count100
 \scratchdimen=\dimen114
@@ -395,35 +393,59 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 48.
+Underfull \hbox (badness 1365) in paragraph at lines 33--34
+[]\OT1/cmr/m/n/10.95 What ma-chine learn-ing al-go-rithms are
+ []
 
+
+Underfull \hbox (badness 1331) in paragraph at lines 43--44
+\OT1/cmr/m/n/10.95 Gov-track's database we pulled data about
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 48.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 48.
- [2] [3] [4
+ [2] [3]
+<accuracy_comparison.png, id=16, 868.74562pt x 632.3625pt>
+File: accuracy_comparison.png Graphic file (type png)
 
-]
-("C:\Users\Ben\Documents\Machine Learning\MachineLearningFinal\Poster\report.au
-x") ) 
+<use accuracy_comparison.png>
+Package pdftex.def Info: accuracy_comparison.png used on input line 84.
+(pdftex.def)             Requested size: 469.75499pt x 341.94347pt.
+
+Overfull \hbox (0.75499pt too wide) in paragraph at lines 84--85
+[][] 
+ []
+
+[4] [5 <D:/Ben/Documents/MachineLearningFinal/Poster/accuracy_comparison.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6]
+[7
+
+] (D:\Ben\Documents\MachineLearningFinal\Poster\report.aux) ) 
 Here is how much of TeX's memory you used:
- 2231 strings out of 494045
- 27312 string characters out of 3145974
- 84319 words of memory out of 3000000
- 5514 multiletter control sequences out of 15000+200000
- 11044 words of font info for 42 fonts, out of 3000000 for 9000
+ 2240 strings out of 494045
+ 27319 string characters out of 3145975
+ 85319 words of memory out of 3000000
+ 5520 multiletter control sequences out of 15000+200000
+ 11390 words of font info for 43 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 27i,7n,22p,1222b,221s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.p
-fb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb
-><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C
-:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Prog
-ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on report.pdf (4 pages, 87882 bytes).
+ 27i,7n,22p,1245b,221s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files 
+(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files (x
+86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86
+)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on report.pdf (7 pages, 135002 bytes).
 PDF statistics:
- 39 PDF objects out of 1000 (max. 8388607)
+ 57 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
