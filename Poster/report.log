@@ -1,7 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  12 DEC 2012 13:45
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.31)  12 DEC 2012 14:24
 entering extended mode
 **report.tex
-(D:\Ben\Documents\MachineLearningFinal\Poster\report.tex
+
+("C:\Users\Ben\Documents\Machine Learning\MachineLearningFinal\Poster\report.te
+x"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -355,7 +357,8 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \WF@everypar=\toks22
 Package: wrapfig 2003/01/31  v 3.6
 )
-(D:\Ben\Documents\MachineLearningFinal\Poster\report.aux)
+("C:\Users\Ben\Documents\Machine Learning\MachineLearningFinal\Poster\report.au
+x")
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
 LaTeX Font Info:    ... okay on input line 10.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
@@ -368,8 +371,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
 LaTeX Font Info:    ... okay on input line 10.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
 LaTeX Font Info:    ... okay on input line 10.
-
-(C:\Users\Ben\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+ (C:\Users\Ben\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count101
 \scratchdimen=\dimen116
@@ -443,7 +445,7 @@ File: accuracy_comparison2.png Graphic file (type png)
 Package pdftex.def Info: accuracy_comparison2.png used on input line 106.
 (pdftex.def)             Requested size: 470.50665pt x 261.9781pt.
 
-Overfull \hbox (1.50665pt too wide) in paragraph at lines 106--107
+Overfull \hbox (8.30664pt too wide) in paragraph at lines 106--107
  [][] 
  []
 
@@ -453,23 +455,19 @@ File: mcnemar_results2.png Graphic file (type png)
 <use mcnemar_results2.png>
 Package pdftex.def Info: mcnemar_results2.png used on input line 114.
 (pdftex.def)             Requested size: 199.49481pt x 145.29245pt.
-
-Underfull \vbox (badness 1205) has occurred while \output is active []
-
- [5 <D:/Ben/Documents/MachineLearningFinal/Poster/c_values2.png> <D:/Ben/Docume
-nts/MachineLearningFinal/Poster/pie_chart_12.png> <D:/Ben/Documents/MachineLear
-ningFinal/Poster/mcnemar_results2.png>]
+ [5 <C:/Users/Ben/Documents/Machine Learning/MachineLearningFinal/Poster/c_valu
+es2.png> <C:/Users/Ben/Documents/Machine Learning/MachineLearningFinal/Poster/p
+ie_chart_12.png> <C:/Users/Ben/Documents/Machine Learning/MachineLearningFinal/
+Poster/mcnemar_results2.png>]
 <data_distribution2.png, id=31, 201.75375pt x 146.04562pt>
 File: data_distribution2.png Graphic file (type png)
 
 <use data_distribution2.png>
 Package pdftex.def Info: data_distribution2.png used on input line 122.
 (pdftex.def)             Requested size: 201.75325pt x 146.04524pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [6 <D:/Ben/Documents/MachineLearningFinal/Poster/accuracy_comparison2.png> <D:
-/Ben/Documents/MachineLearningFinal/Poster/data_distribution2.png>]
+ [6 <C:/Users/Ben/Documents/Machine Learning/MachineLearningFinal/Poster/accura
+cy_comparison2.png> <C:/Users/Ben/Documents/Machine Learning/MachineLearningFin
+al/Poster/data_distribution2.png>]
 <size_accuracy2.png, id=37, 472.01344pt x 261.22594pt>
 File: size_accuracy2.png Graphic file (type png)
 
@@ -477,7 +475,7 @@ File: size_accuracy2.png Graphic file (type png)
 Package pdftex.def Info: size_accuracy2.png used on input line 130.
 (pdftex.def)             Requested size: 472.01228pt x 261.22528pt.
 
-Overfull \hbox (3.01228pt too wide) in paragraph at lines 130--131
+Overfull \hbox (9.81227pt too wide) in paragraph at lines 130--131
  [][] 
  []
 
@@ -488,32 +486,32 @@ Underfull \vbox (badness 1490) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7]
-Underfull \vbox (badness 2495) has occurred while \output is active []
-
- [8 <D:/Ben/Documents/MachineLearningFinal/Poster/size_accuracy2.png>]
+[8 <C:/Users/Ben/Documents/Machine Learning/MachineLearningFinal/Poster/size_ac
+curacy2.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
 [10
 
-] (D:\Ben\Documents\MachineLearningFinal\Poster\report.aux) ) 
+]
+("C:\Users\Ben\Documents\Machine Learning\MachineLearningFinal\Poster\report.au
+x") ) 
 Here is how much of TeX's memory you used:
  2332 strings out of 494045
- 28732 string characters out of 3145975
+ 28893 string characters out of 3145974
  87520 words of memory out of 3000000
  5603 multiletter control sequences out of 15000+200000
  11390 words of font info for 43 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  27i,7n,22p,1440b,221s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files 
-(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files (x
-86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86
-)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.
-9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on report.pdf (10 pages, 164977 bytes).
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.p
+fb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb
+><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C
+:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/P
+rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Prog
+ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on report.pdf (10 pages, 165400 bytes).
 PDF statistics:
  76 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
