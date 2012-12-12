@@ -73,7 +73,7 @@ Feature set:
 
 \subsection{Model Selection}
 
-The machine learning model we chose to use for representative prediction tasks was a support vector machine. We treated each representative as a separate prediction task. Thus we had a separate data set for each member of the House. We split each data set into training, validation and testing sets. Thirty percent of the data for each member was used for testing, the remaining seventy percent was split between training and validation, with eighty percent going to training and twenty percent to validation. Then for each representative we trained, and tuned a separate support vector machine with a linear kernel, using the validation set to pick the best C value from five options $[0.0001, 0.001, 0.01, 0.05, 0.1]$. All support vector machine models were done in Python using the scikit-learn library. Thus we had 430 separate support vector machines. We tested each tuned support vector machine on the test set, recording the bills on which the support vector machine incorrectly predicted the House member's vote as well as the accuracy. We then tested our baseline model, which predicts that a representative will vote "yea" if he or she aligns with the same party as the bill sponsor and "nay" otherwise. 
+The machine learning model we chose to use for representative prediction tasks was a support vector machine. We treated each representative as a separate prediction task. Thus we had a separate data set for each member of the House. We split each data set into training, validation and testing sets. Thirty percent of the data for each member was used for testing, the remaining seventy percent was split between training and validation, with eighty percent going to training and twenty percent to validation. Then for each representative we trained, and tuned a separate support vector machine with a linear kernel, using the validation set to pick the best C value from five options $[0.0001, 0.001, 0.01, 0.05, 0.1]$. All support vector machine models were done in Python using the scikit-learn library. Thus we had 430 separate support vector machines. We tested each tuned support vector machine on the test set, recording the bills on which the support vector machine incorrectly predicted the House member's vote as well as the accuracy. We then tested our baseline model, which predicts that a representative will vote "yea" if he or she aligns with the same party as the bill sponsor and "nay" otherwise. We also tried using decision trees to predict votes, to compare the performance of our support vector machine model against another machine learning model.
 
 To predict the outcome of a vote on bill passage we created a model which combined our individual predictions of representatives' votes into a single prediction. To do this we used a simple model which used predictions for a given bill to compute a weighted sum of votes. Each vote was weighted by the accuracy of the optimized support vector machine on the representative's test set. The weighted sums of nay and yea were then compared to determine the outcome.
 
@@ -85,12 +85,12 @@ To analyze the performance of our support vector machine models we compared them
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{c_values.png}
-\caption{Hello}
+\caption{Pie chart showing the portion of representatives' optimized support vector machines with the given C value.}
 \end{figure}
 
 The results of tuning our support vector machines for each representative indicate that for most representatives a C value of 0.1 is the best. As can be seen in figure 1, the vast majority of optimized C values were 0.1 with small numbers of representatives' optimized C values being 0.05, 0.01, and 0.001.
 
-The average accuracy of the optimized support vector machines on each representative's test set was 84.60\%, while the baseline model had an average accuracy of 80.80\% on those same test sets. Thus the optimized support vector machine had an average accuracy 3.80\% higher than that of the baseline model.
+The average accuracy of the optimized support vector machines on each representative's test set was 84.60\%, while the baseline model had an average accuracy of 80.80\% on those same test sets. Thus the optimized support vector machine had an average accuracy 3.80\% higher than that of the baseline model. The average accuracy of each representative's trained decision tree on their test set was 81.98\%, a 1.18\% increase over the baseline model; however, the model fell more than two and half percent short of the optimized support vector machine model so was not pursued further.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{pie_chart_1.png}
@@ -100,7 +100,7 @@ The average accuracy of the optimized support vector machines on each representa
 For 355 of the 430 representatives the support vector machine did as well as or better than the baseline. Of those 355 representatives, only eighty five had approximately equal results between the optimized support vector machine and the baseline hypothesis (Figure 2).
 
 \begin{figure*}[t]
-\includegraphics[width=\linewidth]{accuracy_comparison2.png}
+\includegraphics{accuracy_comparison2.png}
 \caption{A comparison of the baseline accuracy and optimized SVM accuracy sorted by representative such that baseline accuracy is increasing as representative number increases.}
 \end{figure*}
 
@@ -121,7 +121,7 @@ The results of our statistical analysis of the baseline hypothesis and the optim
 We further examined our results to see how data sparseness could be affecting our results. As can be seen in Figure 5, for nearly a quarter of representatives have fewer than 500 votes each, giving us little data with which to work. Thus we were concerned that the amount of data we had for each representative may be affecting the performance of the baseline model and the support vector machine model.
 
 \begin{figure*}[t]
-\includegraphics[width=\linewidth]{size_accuracy2.png}
+\includegraphics{size_accuracy2.png}
 \caption{Comparison of test accuracies between baseline and optimized support vector machine, representatives sorted by number of votes. Linear trendlines included to show trends.}
 \end{figure*}
 
@@ -158,6 +158,12 @@ The ideal point topic model takes text of bills to come up with the topic of a b
 Our problem is far different. We do not limit our bills to roll call votes and instead of focusing on both the Senate and the House we look only at the House. Further we do more than predict individual votes, but also take our individual predicts and use them to predict bill passage. Gerrish and Blei used the text of bills to create various extended ideal point models to predict how a congressperson will vote. We do not use the ideal point model, or any of the machine learning techniques applied by Gerrish and Blei. Instead we use a support vector machine and metadata about bills, rather than bill text. Our problem is more general in its scope and has further applications to the general public and industry, as predicting bill passage could prove to be useful for  corporations and citizens. Further our approach is simpler, applying the commonly used support vector machines to small, computationally inexpensive feature vectors easily pulled from bill metadata.
  
 \section{Future Work}
+
+Our work thus far has focused only on bill metadata while the work of Gerrish and Blei focused only on the text of bills. We would like to continue our work by trying to incorporate both metadata and bill text to more accurately predict votes. Though we had made initial attempts to incorporate both, there are huge computational costs in using bill text that we have not yet further overcome. One interesting avenue we are looking into is using topic modeling to greatly decrease the size of the feature set generated from a simple bag of words of a bill's text.
+
+Further, we have only created models for the House of Representatives here. We are interested in generalizing and extending our models such that they can be used to predict votes of senators as well as representatives. 
+
+Finally in this paper we focus upon only a couple simple machine learning models for our work. We explored only simple decision trees, support vector machines and our baseline model. We would like to explore support vector machines further, trying different kernels as well as larger C values. Due to computation time we could not use C values greater than 0.1 as training time for a single support vector machine could take more than 10 minutes. We have not explored other models such as generative models, regression models, or nearest neighbor methods.
 
 \section{Conclusion}
 
