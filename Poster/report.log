@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  11 DEC 2012 19:58
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  12 DEC 2012 09:32
 entering extended mode
 **report.tex
 (D:\Ben\Documents\MachineLearningFinal\Poster\report.tex
@@ -410,26 +410,33 @@ Underfull \hbox (badness 1331) in paragraph at lines 44--45
 \OT1/cmr/m/n/10.95 Gov-track's database we pulled data about
  []
 
+[2]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 51.
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 51.
- [2] [3]
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3]
+Underfull \vbox (badness 1087) has occurred while \output is active []
+
+
 <c_values2.png, id=16, 201.00093pt x 146.79843pt>
 File: c_values2.png Graphic file (type png)
  <use c_values2.png>
 Package pdftex.def Info: c_values2.png used on input line 88.
 (pdftex.def)             Requested size: 201.00043pt x 146.79807pt.
- [4 <D:/Ben/Documents/MachineLearningFinal/Poster/c_values2.png>]
-<pie_chart_12.png, id=23, 210.7875pt x 153.57375pt>
+ [4]
+<pie_chart_12.png, id=22, 210.7875pt x 153.57375pt>
 File: pie_chart_12.png Graphic file (type png)
  <use pie_chart_12.png>
 Package pdftex.def Info: pie_chart_12.png used on input line 98.
 (pdftex.def)             Requested size: 210.78699pt x 153.57336pt.
 
-<accuracy_comparison2.png, id=24, 470.50781pt x 261.97874pt>
+<accuracy_comparison2.png, id=23, 470.50781pt x 261.97874pt>
 File: accuracy_comparison2.png Graphic file (type png)
 
 <use accuracy_comparison2.png>
@@ -440,17 +447,18 @@ Overfull \hbox (1.50665pt too wide) in paragraph at lines 106--107
  [][] 
  []
 
-<mcnemar_results2.png, id=25, 199.49532pt x 145.29282pt>
+<mcnemar_results2.png, id=24, 199.49532pt x 145.29282pt>
 File: mcnemar_results2.png Graphic file (type png)
 
 <use mcnemar_results2.png>
 Package pdftex.def Info: mcnemar_results2.png used on input line 114.
 (pdftex.def)             Requested size: 199.49481pt x 145.29245pt.
 
-Underfull \vbox (badness 8075) has occurred while \output is active []
+Underfull \vbox (badness 1205) has occurred while \output is active []
 
- [5 <D:/Ben/Documents/MachineLearningFinal/Poster/pie_chart_12.png> <D:/Ben/Doc
-uments/MachineLearningFinal/Poster/mcnemar_results2.png>]
+ [5 <D:/Ben/Documents/MachineLearningFinal/Poster/c_values2.png> <D:/Ben/Docume
+nts/MachineLearningFinal/Poster/pie_chart_12.png> <D:/Ben/Documents/MachineLear
+ningFinal/Poster/mcnemar_results2.png>]
 <data_distribution2.png, id=31, 201.75375pt x 146.04562pt>
 File: data_distribution2.png Graphic file (type png)
 
@@ -458,7 +466,11 @@ File: data_distribution2.png Graphic file (type png)
 Package pdftex.def Info: data_distribution2.png used on input line 122.
 (pdftex.def)             Requested size: 201.75325pt x 146.04524pt.
 
-<size_accuracy2.png, id=32, 472.01344pt x 261.22594pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6 <D:/Ben/Documents/MachineLearningFinal/Poster/accuracy_comparison2.png> <D:
+/Ben/Documents/MachineLearningFinal/Poster/data_distribution2.png>]
+<size_accuracy2.png, id=37, 472.01344pt x 261.22594pt>
 File: size_accuracy2.png Graphic file (type png)
 
 <use size_accuracy2.png>
@@ -470,17 +482,18 @@ Overfull \hbox (3.01228pt too wide) in paragraph at lines 130--131
  []
 
 
-Underfull \vbox (badness 1648) has occurred while \output is active []
+Underfull \vbox (badness 1490) has occurred while \output is active []
 
- [6 <D:/Ben/Documents/MachineLearningFinal/Poster/accuracy_comparison2.png> <D:
-/Ben/Documents/MachineLearningFinal/Poster/data_distribution2.png>]
+ [7]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [7 <D:/Ben/Documents/MachineLearningFinal/Poster/size_accuracy2.png>] [8]
+ [8 <D:/Ben/Documents/MachineLearningFinal/Poster/size_accuracy2.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-(D:\Ben\Documents\MachineLearningFinal\Poster\report.aux) ) 
+[10
+
+] (D:\Ben\Documents\MachineLearningFinal\Poster\report.aux) ) 
 Here is how much of TeX's memory you used:
  2332 strings out of 494045
  28732 string characters out of 3145975
@@ -488,18 +501,18 @@ Here is how much of TeX's memory you used:
  5603 multiletter control sequences out of 15000+200000
  11390 words of font info for 43 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 27i,7n,22p,1401b,221s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x
-86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files (x86
-)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86)/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKTeX
- 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 2.
-9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/
-fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on report.pdf (9 pages, 164375 bytes).
+ 27i,7n,22p,1441b,221s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files 
+(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files (x
+86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86
+)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on report.pdf (10 pages, 164960 bytes).
 PDF statistics:
- 73 PDF objects out of 1000 (max. 8388607)
+ 76 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
