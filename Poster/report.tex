@@ -84,7 +84,8 @@ To analyze the performance of our support vector machine models we compared them
 \section{Results}
 
 \begin{figure}
-\includegraphics[width=\columnwidth]{c_values.png}
+\centering
+\includegraphics{c_values2.png}
 \caption{Pie chart showing the portion of representatives' optimized support vector machines with the given C value.}
 \end{figure}
 
@@ -93,13 +94,15 @@ The results of tuning our support vector machines for each representative indica
 The average accuracy of the optimized support vector machines on each representative's test set was 84.60\%, while the baseline model had an average accuracy of 80.80\% on those same test sets. Thus the optimized support vector machine had an average accuracy 3.80\% higher than that of the baseline model. The average accuracy of each representative's trained decision tree on their test set was 81.98\%, a 1.18\% increase over the baseline model; however, the model fell more than two and half percent short of the optimized support vector machine model so was not pursued further.
 
 \begin{figure}
-\includegraphics[width=\columnwidth]{pie_chart_1.png}
+\centering
+\includegraphics{pie_chart_12.png}
 \caption{A pie chart comparing for how many representatives the support vector machine performs better than the baseline, how many each model performs approximately the same and for how many the baseline performs better}
 \end{figure}
 
 For 355 of the 430 representatives the support vector machine did as well as or better than the baseline. Of those 355 representatives, only eighty five had approximately equal results between the optimized support vector machine and the baseline hypothesis (Figure 2).
 
 \begin{figure*}[t]
+\centering
 \includegraphics{accuracy_comparison2.png}
 \caption{A comparison of the baseline accuracy and optimized SVM accuracy sorted by representative such that baseline accuracy is increasing as representative number increases.}
 \end{figure*}
@@ -107,20 +110,23 @@ For 355 of the 430 representatives the support vector machine did as well as or 
 As can be seen in Figure 3, the support vector machine's performance was particularly good in comparison to the baseline for representatives where the baseline had relatively poor test accuracy. For representatives on which the baseline test accuracy was higher the optimized support vector machines fell more into line with the baseline, typically doing better than it.
 
 \begin{figure}
-\includegraphics[width=\columnwidth]{mcnemar_results.png}
+\centering
+\includegraphics{mcnemar_results2.png}
 \caption{A pie chart showing the cumulative results of McNemar's Tests on each representative. "SVM" indicates the null hypothesis was rejected and the SVM performed better, vice versa for "Baseline" and "Same" indicates the null hypothesis could not be reject.}
 \end{figure}
 
 The results of our statistical analysis of the baseline hypothesis and the optimized support vector machines  can be seen in Figure 4. The results are similarly encouraging to the observational results detailed above. Cumulatively, for 139 representatives we can reject the null hypothesis of the McNemar's Test with 95\% confidence and say that the optimized support vector machine is a better hypothesis as it performed better in these 139 cases. For 61 representatives the opposite was true and the null hypothesis was rejected in favor of the baseline model. Thus for more than twice as many representatives the optimized support vector machines are better with 95\% confidence. This indicates that overall the optimized support vector machine model was a better hypothesis than the baseline model.
 
 \begin{figure}
-\includegraphics[width=\columnwidth]{data_distribution.png}
+\centering
+\includegraphics{data_distribution2.png}
 \caption{Histogram showing how many representatives have the number of votes within each bin.}
 \end{figure}
 
 We further examined our results to see how data sparseness could be affecting our results. As can be seen in Figure 5, for nearly a quarter of representatives have fewer than 500 votes each, giving us little data with which to work. Thus we were concerned that the amount of data we had for each representative may be affecting the performance of the baseline model and the support vector machine model.
 
 \begin{figure*}[t]
+\centering
 \includegraphics{size_accuracy2.png}
 \caption{Comparison of test accuracies between baseline and optimized support vector machine, representatives sorted by number of votes. Linear trendlines included to show trends.}
 \end{figure*}

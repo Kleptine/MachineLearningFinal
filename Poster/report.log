@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  11 DEC 2012 19:44
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.1)  11 DEC 2012 19:58
 entering extended mode
 **report.tex
 (D:\Ben\Documents\MachineLearningFinal\Poster\report.tex
@@ -417,67 +417,63 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 51.
  [2] [3]
-<c_values.png, id=16, 901.86937pt x 655.69969pt>
-File: c_values.png Graphic file (type png)
- <use c_values.png>
-Package pdftex.def Info: c_values.png used on input line 87.
-(pdftex.def)             Requested size: 223.83022pt x 162.7339pt.
- [4 <D:/Ben/Documents/MachineLearningFinal/Poster/c_values.png>]
-<pie_chart_1.png, id=23, 901.11656pt x 656.4525pt>
-File: pie_chart_1.png Graphic file (type png)
- <use pie_chart_1.png>
-Package pdftex.def Info: pie_chart_1.png used on input line 96.
-(pdftex.def)             Requested size: 223.83022pt x 163.05095pt.
+<c_values2.png, id=16, 201.00093pt x 146.79843pt>
+File: c_values2.png Graphic file (type png)
+ <use c_values2.png>
+Package pdftex.def Info: c_values2.png used on input line 88.
+(pdftex.def)             Requested size: 201.00043pt x 146.79807pt.
+ [4 <D:/Ben/Documents/MachineLearningFinal/Poster/c_values2.png>]
+<pie_chart_12.png, id=23, 210.7875pt x 153.57375pt>
+File: pie_chart_12.png Graphic file (type png)
+ <use pie_chart_12.png>
+Package pdftex.def Info: pie_chart_12.png used on input line 98.
+(pdftex.def)             Requested size: 210.78699pt x 153.57336pt.
 
 <accuracy_comparison2.png, id=24, 470.50781pt x 261.97874pt>
 File: accuracy_comparison2.png Graphic file (type png)
 
 <use accuracy_comparison2.png>
-Package pdftex.def Info: accuracy_comparison2.png used on input line 103.
+Package pdftex.def Info: accuracy_comparison2.png used on input line 106.
 (pdftex.def)             Requested size: 470.50665pt x 261.9781pt.
 
-Overfull \hbox (1.50665pt too wide) in paragraph at lines 103--104
-[][] 
+Overfull \hbox (1.50665pt too wide) in paragraph at lines 106--107
+ [][] 
  []
 
+<mcnemar_results2.png, id=25, 199.49532pt x 145.29282pt>
+File: mcnemar_results2.png Graphic file (type png)
 
-Underfull \vbox (badness 1067) has occurred while \output is active []
+<use mcnemar_results2.png>
+Package pdftex.def Info: mcnemar_results2.png used on input line 114.
+(pdftex.def)             Requested size: 199.49481pt x 145.29245pt.
 
+Underfull \vbox (badness 8075) has occurred while \output is active []
 
-<mcnemar_results.png, id=25, 902.6222pt x 656.4525pt>
-File: mcnemar_results.png Graphic file (type png)
+ [5 <D:/Ben/Documents/MachineLearningFinal/Poster/pie_chart_12.png> <D:/Ben/Doc
+uments/MachineLearningFinal/Poster/mcnemar_results2.png>]
+<data_distribution2.png, id=31, 201.75375pt x 146.04562pt>
+File: data_distribution2.png Graphic file (type png)
 
-<use mcnemar_results.png>
-Package pdftex.def Info: mcnemar_results.png used on input line 110.
-(pdftex.def)             Requested size: 223.83022pt x 162.7805pt.
-
-Underfull \vbox (badness 2772) has occurred while \output is active []
-
- [5 <D:/Ben/Documents/MachineLearningFinal/Poster/pie_chart_1.png> <D:/Ben/Docu
-ments/MachineLearningFinal/Poster/mcnemar_results.png>]
-<data_distribution.png, id=31, 901.11656pt x 655.69969pt>
-File: data_distribution.png Graphic file (type png)
-
-<use data_distribution.png>
-Package pdftex.def Info: data_distribution.png used on input line 117.
-(pdftex.def)             Requested size: 223.83022pt x 162.86397pt.
+<use data_distribution2.png>
+Package pdftex.def Info: data_distribution2.png used on input line 122.
+(pdftex.def)             Requested size: 201.75325pt x 146.04524pt.
 
 <size_accuracy2.png, id=32, 472.01344pt x 261.22594pt>
 File: size_accuracy2.png Graphic file (type png)
 
 <use size_accuracy2.png>
-Package pdftex.def Info: size_accuracy2.png used on input line 124.
+Package pdftex.def Info: size_accuracy2.png used on input line 130.
 (pdftex.def)             Requested size: 472.01228pt x 261.22528pt.
 
-Overfull \hbox (3.01228pt too wide) in paragraph at lines 124--125
-[][] 
+Overfull \hbox (3.01228pt too wide) in paragraph at lines 130--131
+ [][] 
  []
 
 
 Underfull \vbox (badness 1648) has occurred while \output is active []
 
  [6 <D:/Ben/Documents/MachineLearningFinal/Poster/accuracy_comparison2.png> <D:
-/Ben/Documents/MachineLearningFinal/Poster/data_distribution.png>]
+/Ben/Documents/MachineLearningFinal/Poster/data_distribution2.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7 <D:/Ben/Documents/MachineLearningFinal/Poster/size_accuracy2.png>] [8]
@@ -487,7 +483,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 (D:\Ben\Documents\MachineLearningFinal\Poster\report.aux) ) 
 Here is how much of TeX's memory you used:
  2332 strings out of 494045
- 28712 string characters out of 3145975
+ 28732 string characters out of 3145975
  87520 words of memory out of 3000000
  5603 multiletter control sequences out of 15000+200000
  11390 words of font info for 43 fonts, out of 3000000 for 9000
@@ -501,7 +497,7 @@ TeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKTeX
  2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 2.
 9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/
 fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on report.pdf (9 pages, 255439 bytes).
+Output written on report.pdf (9 pages, 164375 bytes).
 PDF statistics:
  73 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
