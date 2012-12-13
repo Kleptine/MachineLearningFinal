@@ -6,7 +6,9 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{wrapfig}
-\author{Ben Shulman}
+\usepackage{enumitem}
+
+\author{Ben Shulman, John Oliver}
 \begin{document}
 \title{Vote Prediction in the House of Representatives}
 \author{Benjamin Shulman, Jisha Kambo, John Oliver}
@@ -35,19 +37,26 @@ We are specifically interested in two questions:
 \end{enumerate}
 
 \section{Algorithms and Methods}
-To address our first question we focused primarily on using support vector machines to predict how each Representative would vote. For each representative we trained, tuned using a validation set, and tested a separate support vector machine. To compare the success of support vector machines in predicting representatives' votes we used a baseline hypothesis which predicted that if a representative was of the same party as the sponsor of the bill he or she would vote "Yea" or if not, would vote "Nay." To predict whether a bill would be passed or not we did not use a standard machine learning algorithm as we had already done the prediction part using the individual support vector machines that predicted representatives' votes. Instead we used a simple algorithm that took a sum of predicted votes, where each vote is weighted by the accuracy of the representative's support vector machine on the test set for that representative. 
+To address our first question we used support vector machines to predict how each Representative would vote. For each representative, we trained and tested a separate linear support vector machine. We tuned each model separately with a validation set to determine ideal C values. 
+
+Our baseline hypothesis, used to compare the success of support vector machines in predicting representatives' votes, was implemented on a ``party-line'' split. That is, if a representative was of the same political party as the sponsor of the bill he or she would vote "Yea", otherwise "Nay."
+
+To predict whether a bill's passage, we used a simple algorithm that took a sum of predicted votes, where each vote is weighted by the accuracy of the representative's support vector machine on the test set for that representative. 
 
 \section{Methodology}
 
 \subsection{Data}
 
-We pulled data from www.govtrack.us, a website promoting government transparency. From Govtrack's database we pulled data about all current representatives. We excluded five representatives from our experiment as there were problems with their information in the database, leaving us with 430 representatives. We used Govtrack's database to extract the voting records of these 430 representatives. For each representative we pulled all bills which were being voted on for passage on which they had ever voted. Each bill represented an input datapoint for a representative. The data from the database about each bill included information about the status of the bill; when it was introduced; congress number; when it was voted on; its title; and information about the sponsor of the bill such as name, district, and party. 
+We pulled data from www.govtrack.us, a website promoting government transparency. Govtrack provided us a web-based API from which we could query information about representatives, bills, and votes. From Govtrack's database we pulled data about all current representatives. We excluded five representatives from our experiment due to corrupt information, leaving us with 430 representatives. We used Govtrack's database to extract the voting records of these 430 representatives. For each representative we pulled all bills which were voted on for passage and on which they had voted. In our system, each bill represented an input datapoint for a representative. The data from the database about each bill included information about the status of the bill; when it was introduced; congress number; when it was voted on; its title; and information about the sponsor of the bill such as name, district, and party. (See 4.2)
 
-A month after we pulled all the bills which the current members of the House had voted on we pulled the six bills which had been voted on for passage in that month. These bills were then used to predict if the bill would pass or not.
+Two months later we pulled all bills which had been voted on for passage in that period. These bills were then used to predict if the bill would pass or not.
 
 \subsection{Feature Selection}
+From the metadata of a bill, we selected a set of features to consider in our models:\\
+
 Feature set:
-\begin{itemize}
+\begin{itemize}[noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt]
+\renewcommand\labelitemi{-}
 \item Party of bill sponsor
 \item Name of bill sponsor
 \item District of bill sponsor
@@ -64,55 +73,65 @@ Feature set:
 \item Year the bill was voted on
 \item Year the bill was voted on mod 2
 \item Year the bill was voted on mod 4
-\item Year the bill was voted on mod 6
+\item Year the bill was voted on mod 6\\
 \end{itemize}
-
-	From the metadata of each bill, we selected a set of features we wanted to consider in our models. The first was the party of the bill sponsor, we believe that representatives are likely to be have party bias and thus this is an important feature. We also used the sponsor's gender, as some representatives may have gender bias. Further we chose the sponsor's district and name as well, as representative's vote may be dependent upon certain districts or particular sponsors. For each representative, we binarized the bill sponsor's district and name features; meaning if there were ten training bills for a representative, there may be up to ten features for sponsor name and up to ten for sponsor district. Additional sponsor information we used as features was the date the sponsor joined the House, whether he or she had a Twitter, whether he or she had a website, and finally whether he or she had a nickname--each of these features were considered important as they could be indicators of the influence, popularity and experience of the sponsor which may be relevant to the voting representative.
+	We discuss the motivation for each:\\
 	
-	We included several other pieces of information about the bill. We extracted seven features from the date of the vote on the bill: the day of the vote, the month of the vote, the year of the vote, the year mod two, the year mod four and the year mod six. The day, month and year may all matter as priorities change given the time of year. The year mod features align with voting cycles: representatives are elected every two years, president every four and senators every six. Thus if a representative was running in one of those elections, the time in relation to the cycle may affect his or her vote. Finally we included the congressional session in which the bill was voted on and the length of time the bill was active in days before it was voted on. These two features were included as the length of time a bill is debated for as well as the session in which it is voted on may effect the vote. All of these features constituted the feature set we used in our models.
+	 The first was the party of the bill sponsor, we believe that representatives are likely to be have party bias and thus this is an important feature. We used the sponsor's gender, as some representatives may have gender bias. We chose the sponsor's district and name as well, as representative's may favor certain other representatives or districts. Additional sponsor information we used as features was the date the sponsor joined the House (indicative of influence), whether he or she had a Twitter, whether he or she had a website (suggests younger constituents)
+	
+	We included several other pieces of information about the bill. We extracted total seven features from the date of the vote on the bill. The day, month and year react to changes in current events and priorities over the year. The year mod features align with voting cycles: representatives are elected every two years, president every four and senators every six. Thus if a representative was running in one of those elections, the time in relation to the cycle may affect his or her vote. We included the length of life of the bill; after long discussion on a bill, representatives may want to get it out of the house. Lastly, we included the congressional session in which the bill was voted on, as the makeup of a session of congress (which political party has the majority) can drastically affect how a politician votes. 
+	
+	For any feature that was categorical (sponsor party, name, district, etc), we expanded the feature into a list of n binary features, n being the number of categories. For instance, a single district feature $[20]$ would become $[0,0,0,1]$ for a set of all categories $[17, 23, 19, 20]$. We utilized a sparse matrix model for computations, making this method efficient for the number of extra features.
 
 \subsection{Model Selection}
 
-The machine learning model we chose to use for representatives' prediction tasks was a support vector machine. We treated each representative as a separate prediction task. Thus we had a separate data set for each member of the House. We split each data set into training, validation and testing sets. Thirty percent of the data for each member was used for testing, the remaining seventy percent was split between training and validation, with eighty percent going to training and twenty percent to validation. Then for each representative we trained and tuned a separate support vector machine with a linear kernel, using the validation set to pick the best C value from five options $[0.0001, 0.001, 0.01, 0.05, 0.1]$. All support vector machine models were done in Python using the scikit-learn library. Thus we had 430 separate support vector machines. We tested each tuned support vector machine on the test set, recording the bills on which the support vector machine incorrectly predicted the House member's vote as well as the accuracy. We then tested our baseline model, which predicts that a representative will vote "yea" if he or she aligns with the same party as the bill sponsor and "nay" otherwise for all representatives, individually. We also tried using decision trees to predict votes, to compare the performance of our support vector machine model against another machine learning model.
+The machine learning model we chose to use for representatives' prediction tasks was a support vector machine. We treated each representative as a separate prediction task, thus we had a separate data set for each member of the House. We split each data set into training, validation and testing sets. Thirty percent of the data for each member was used for testing, the remaining seventy percent was split between training and validation, with eighty percent going to training and twenty percent to validation. Then for each representative we trained and tuned a separate support vector machine with a linear kernel, using the validation set to pick the best C value from five options $[0.0001, 0.001, 0.01, 0.05, 0.1]$. All support vector machine models were done in Python using the scikit-learn library. We tested and tuned all 430 models on their test sets, recording the bills on which each incorrectly predicted the House member's vote as well as the overall accuracy. We then tested our baseline model, party-line voting, on the same test set, recording the same metrics.
 
-To predict the outcome of a vote on bill passage we created a model which combined our individual predictions of representatives' votes into a single prediction. To do this we used a simple model which used predictions for a given bill to compute a weighted sum of votes. Each vote was weighted by the accuracy of the optimized support vector machine on the representative's test set. The weighted sums of nay and yea were then compared to determine the outcome.
+To predict the outcome of a vote on bill passage we created a model which combined our individual predictions of representatives' votes into a single prediction. To do this we used predictions for a given bill to compute a weighted sum of votes. Each vote was weighted by the accuracy of the optimized support vector machine on the representative's test set. The weighted sums of nay and yea were then compared to determine the outcome.
 
 \subsection{Statistical Analysis}
 
-To analyze the performance of our support vector machine models we compared them against our baseline hypothesis. We performed an individual McNemar's Test with the null hypothesis that both the algorithms were different and a confidence interval of 95\% for every representative, resulting in 430 tests. Then, to determine whether our optimized support vector machines were performing statistically better.  with 95\% confidence, we compared the number of McNemar's Tests in which the optimized support vector machine had performed better, against the number of tests in which our baseline performed better.
+We performed an individual McNemar's Test for each representative compared with the baseline. Our null hypothesis was that both the algorithms were different and we used a confidence interval of 95\%. To judge the overall comparison of the system to the baseline, we compared the number of McNemar's Tests in which the optimized support vector machine performed better, against the number of tests in which our baseline performed better.
 
 \section{Results}
 
 \begin{figure}
 \centering
 \boxed{\includegraphics{c_values2.png}}
-\caption{Pie chart showing the portion of representatives' optimized support vector machines with the given C value.}
-\end{figure}
+\caption{Proportion of models using each C value after validation tuning.}
+\label{fig:1}
+\end{figure} 
 
-The results of tuning our support vector machines for each representative indicate that for most representatives a C value of 0.1 is the best. As can be seen in figure 1, the vast majority of optimized C values were 0.1 with small numbers of representatives' optimized C values being 0.05, 0.01, and 0.001.
+The results of tuning our support vector machines for each representative indicate that for most representatives a C value of 0.1 is the best. As can be seen in Figure \ref{fig:1}, the vast majority of optimized C values were 0.1 with small numbers of representatives' optimized C values being 0.05, 0.01, and 0.001.
 
-The average accuracy of the optimized support vector machines on each representative's test set was 84.60\%, while the baseline model had an average accuracy of 80.80\% on those same test sets. Thus the optimized support vector machine had an average accuracy 3.80\% higher than that of the baseline model. The average accuracy of each representatives' trained decision tree, using the CART (Classification and Regression Trees) algorithm, on the test sets was 81.98\%, a 1.18\% increase over the baseline model. However, the model fell more than two and half percent short of the optimized support vector machine model so was not pursued further.
+The average accuracy of the optimized support vector machines on each representative's test set was 84.60\%, while the baseline model had an average accuracy of 80.80\% on those same test sets. Thus the optimized support vector machine had an average accuracy 3.80\% higher than that of the baseline model. 
 
-\begin{figure}
-\centering
-\boxed{\includegraphics{pie_chart_12.png}}
-\caption{A pie chart comparing for how many representatives the support vector machine performs better than the baseline, how many each model performs approximately the same and for how many the baseline performs better}
-\end{figure}
-
-For 355 of the 430 representatives the support vector machine did as well as or better than the baseline. Of those 355 representatives, only eighty five had approximately equal results between the optimized support vector machine and the baseline hypothesis (Figure 2).
+We additionally tested a separate the decision tree model. The average accuracy of each representatives' trained decision tree, using the CART (Classification and Regression Trees) algorithm, on the test sets was 81.98\%, a 1.18\% increase over the baseline model. However, the model fell more than two and half percent short of the optimized support vector machine model so was not pursued further.
 
 \begin{figure*}[t]
 \centering
 \boxed{\includegraphics{accuracy_comparison2.png}}
-\caption{A comparison of the baseline accuracy and optimized SVM accuracy sorted by representative such that baseline accuracy is increasing as representative id number(arbitrary) progresses.}
+\caption{A comparison of the baseline accuracy and optimized SVM accuracy sorted by baseline accuracy. (Representative number is arbitrary)}
+\label{fig:3}
 \end{figure*}
 
-As can be seen in Figure 3, the support vector machine's performance was particularly good in comparison to the baseline for representatives where the baseline had relatively poor test accuracy. For representatives on which the baseline test accuracy was higher, the optimized support vector machines fell more into line with the baseline, typically doing better than it.
+
+For 355 of the 430 representatives the support vector machine did as well as or better than the baseline. Of those 355 representatives, only eighty five had approximately equal results between the optimized support vector machine and the baseline hypothesis (Figure \ref{fig:2}).
+
+
+\begin{figure}
+\centering
+\boxed{\includegraphics{pie_chart_12.png}}
+\caption{Number of models that beat, equaled, and underperformed versus the baseline.}
+\label{fig:2}
+\end{figure}
+
+As can be seen in Figure \ref{fig:3}, the support vector machine's performance was particularly good in comparison to the baseline for representatives where the baseline had relatively poor test accuracy. For representatives on which the baseline test accuracy was higher, the optimized support vector machines fell more into line with the baseline, typically doing better.
 
 \begin{figure}
 \centering
 \boxed{\includegraphics{mcnemar_results2.png}}
-\caption{A pie chart showing the cumulative results of McNemar's Tests on each representative. "SVM" indicates the null hypothesis was rejected and the SVM performed better, vice versa for "Baseline" and "Same" indicates the null hypothesis could not be rejected.}
+\caption{Cumulative results of McNemar's Tests on each representative. "SVM" indicates the null hypothesis was rejected and the SVM performed better, vice versa for "Baseline". "Same" indicates the null hypothesis could not be rejected.}
 \end{figure}
 
 The results of our statistical analysis of the baseline hypothesis and the optimized support vector machines can be seen in Figure 4. The results are similarly encouraging to the observational results detailed above. Cumulatively, for 139 representatives we can reject the null hypothesis of the McNemar's Test with 95\% confidence and say that the optimized support vector machine is a better hypothesis as it performed better in these 139 cases. For 61 representatives the opposite was true and the null hypothesis was rejected in favor of the baseline model. Thus for more than twice as many representatives the optimized support vector machines are better with 95\% confidence. This indicates that overall the optimized support vector machine model is a better model than the baseline model.
@@ -131,7 +150,11 @@ We further examined our results to see how data sparseness could be affecting ou
 \caption{Comparison of test accuracies between baseline and optimized support vector machine, representatives sorted by number of votes. Linear trendlines included to show trends.}
 \end{figure*}
 
-In Figure 6, the performance of the baseline and the optimized support vector machines on the test sets can be seen, with representatives sorted by the number of votes we had for each, from smallest to largest. As can be seen by the trendlines, the test accuracy for both models declines slightly as the number of votes increases; however, the baseline accuracy decreases more than the optimized support vector machine. Further it can be seen that test accuracies appear to vary less as the number of votes increase.
+In Figure 6, the performance of the baseline and the optimized support vector machines on the test sets can be seen, with representatives sorted by the number of votes we had for each, from smallest to largest. As can be seen by the trendlines, the test accuracy for both models declines slightly as the number of votes increases; however, the baseline accuracy decreases as well and more than the optimized support vector machine. Further, the mean of value of representatives with the largest datasets approximates the overall accuracy of the system.
+
+
+
+We did no thorough examination of predicting passage of bills. Due to the sparseness of our data (Figure 5) we used every bill that we could for training, validation and testing. That left us with six bills that had been voted on for passage in the 2 months after we originally pulled our data. We used our model for predicting bill passage on each of these six bills. As can be seen in Table 1, we correctly predicted that each bill passed. This suggests our system may fair well, however more evaluation is needed.
 
 \begin{table}
 \centering
@@ -147,10 +170,16 @@ Percent of House & Prediction \\ \hline
 \caption{Table showing the ratio (percent) of the weighted sum of predicted "yea" votes to the weighted sum of predicted "nay" votes as well as whether passage was predicted.}
 \end{table}
 
-We did no thorough examination of predicting passage of bills. Due to the sparseness of our data (Figure 5) we used every bill that we could for training, validation and testing. That left us with six bills that had been voted on for passage in the month after we originally pulled our data. We then used our model for predicting bill passage on each of these six bills. As can be seen in Table 1, above, we correctly predicted that each bill passed. 
-
 \section{Discussion}
-Representatives that are less biased along party lines, give a low test accuracy with the baseline model. For these representatives, that do not have significant party bias, our support vector machine model captures other factors to perform better than the baseline model on the prediction task, as can be seen in Figure 3. When the baseline accuracy is very high, we can deduce that the representative is highly biased along party lines; even for these representatives, the support vector machine model performs comparable to the baseline model. We can now also draw conclusions,  by observing the trend in Figure 3, regarding the bias of a representative towards his/her party relative to the other representatives. From the results of the McNemar's tests, the support vector machine model proved to be better than the baseline model for 69.5\% of the reps for which the null hypothesis was rejected by the test. Hence we can conclude that the support vector machine model is a better model than the baseline and is an appropriate model for prediction of votes on bills for representatives in the House of Representatives.
+Our system was successfully able to predict a representative's vote with a 84.60\% accuracy. Additionally, for the majority of representatives we beat the baseline, often by a large percentage. If a representative votes often on party lines, it's unlikely that he will be swayed by other factors. Additionally, as the accuracy approaches the 90's, it becomes much more difficult to improve on the system. 
+
+On the other hand, if a representative is less party-aligned, they will be more likely to respond to interpersonal biases for voting such as the details of a bill's sponsor. 
+
+We also saw a decline in accuracy of both the baseline and our own system, as we used more data. This trend is interesting and could be for a number of reasons. Our initial hypothesis was that the SVM began to approach the true accuracy when the dataset was increased.
+
+However, older representatives have far more data available. Our test set consisted of a random sample of all bills in a congressperson's term. For older members their party affiliation may have swayed during different portions of history. Our model had to make a single assumption based on a cross-section of over 30 yeras, and thus for those older members, may have done poorly. Further testing to determine the exact reasoning for this decline should be done.
+
+
 
 \section{Related Work}
 
@@ -173,6 +202,12 @@ Further, we have only created models for the House of Representatives here. We a
 Finally in this paper we focus upon only a couple simple machine learning models for our work. We explored simple decision trees, support vector machines and our baseline model. We would like to explore support vector machines further, trying different kernels as well as larger C values. Due to computation time costs we could not use C values greater than 0.1 as training time for a single support vector machine could take more than 10 minutes. We would also like to explore other models such as generative models, regression models, or nearest neighbor methods.
 
 \section{Conclusion}
+Our system proved to be a successful method of determining the vote of a specific representative. In statistical testing of our results, 369 out of 430 representative models were either better or equal to the simple party-lines baseline. Further, our system maintained accuracy in many cases where the baseline performed poorly.
+
+This topic is largely untested in the field. The one related publishing (Gerrish \& Blei, 2011) considers only roll call votes (the majority of which pass regardless), and further only the bill's text. While NLP based analysis of a bill's text may seem the obvious method for predicting a representative's choice on a bill, it is important to consider the unspoken biases members have when voting. 
+
+Unlike many other areas, vote prediction is fundamentally the task of predicting people. Far more happens to sway the vote of a bill on the floor of congress hall, than in the text of the bill itself. Our method takes an initial approach at approximating this interaction, modeling a representative's partiality to certain types of sponsors. However, there is still far more work to be done in the area.
+
 
 \section*{Acknowledgments}
 
