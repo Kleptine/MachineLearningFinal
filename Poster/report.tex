@@ -79,7 +79,7 @@ To predict the outcome of a vote on bill passage we created a model which combin
 
 \subsection{Statistical Analysis}
 
-To analyze the performance of our support vector machine models we compared them against our baseline hypothesis. We performed an individual McNemar's Test with the null hypothesis that both the algorithms were different and a confidence interval of 95\% for every representative, resulting in 430 tests. Then, to determine whether our optimized support vector machines were performing statistically better we compared the number of McNemar's Tests which determined that the optimized support vector machine had performed better against the number of tests which had determined our baseline to perform better with 95\% confidence.
+To analyze the performance of our support vector machine models we compared them against our baseline hypothesis. We performed an individual McNemar's Test with the null hypothesis that both the algorithms were different and a confidence interval of 95\% for every representative, resulting in 430 tests. Then, to determine whether our optimized support vector machines were performing statistically better.  with 95\% confidence, we compared the number of McNemar's Tests in which the optimized support vector machine had performed better, against the number of tests in which our baseline performed better.
 
 \section{Results}
 
@@ -149,10 +149,8 @@ Percent of House & Prediction \\ \hline
 
 We did no thorough examination of predicting passage of bills. Due to the sparseness of our data (Figure 5) we used every bill that we could for training, validation and testing. That left us with six bills that had been voted on for passage in the month after we originally pulled our data. We then used our model for predicting bill passage on each of these six bills. As can be seen in Table 1, above, we correctly predicted that each bill passed. 
 
-\section{Conclusion}
-From our results, we can conclude that for representatives that are less biased along party lines, and hence give a low test accuracy with the baseline model, our support vector machine model captures other factors to perform better than the baseline model on the prediction task, as can be seen in Figure 3. When the baseline accuracy is very high, we can deduce that the representative is highly biased along party lines; even for these representatives, the support vector machine model performs comparable to the baseline model. We can now also draw conclusions regarding the bias of a representative towards his party relative to the other representatives by observing the trend in Figure 3. From the results of the McNemar's tests, under the null hypothesis that both algorithms have different performance, the support vector machine model proved to be better than the baseline model for 69.5\% of the reps for which the null hypothesis was rejected by the test. Hence we can conclude that the support vector machine model is a better model than the baseline and is an appropriate model for prediction of votes on bills for representatives in the House of Representatives.
-
 \section{Discussion}
+Representatives that are less biased along party lines, give a low test accuracy with the baseline model. For these representatives, that do not have significant party bias, our support vector machine model captures other factors to perform better than the baseline model on the prediction task, as can be seen in Figure 3. When the baseline accuracy is very high, we can deduce that the representative is highly biased along party lines; even for these representatives, the support vector machine model performs comparable to the baseline model. We can now also draw conclusions,  by observing the trend in Figure 3, regarding the bias of a representative towards his/her party relative to the other representatives. From the results of the McNemar's tests, the support vector machine model proved to be better than the baseline model for 69.5\% of the reps for which the null hypothesis was rejected by the test. Hence we can conclude that the support vector machine model is a better model than the baseline and is an appropriate model for prediction of votes on bills for representatives in the House of Representatives.
 
 \section{Related Work}
 
@@ -174,9 +172,11 @@ Further, we have only created models for the House of Representatives here. We a
 
 Finally in this paper we focus upon only a couple simple machine learning models for our work. We explored simple decision trees, support vector machines and our baseline model. We would like to explore support vector machines further, trying different kernels as well as larger C values. Due to computation time costs we could not use C values greater than 0.1 as training time for a single support vector machine could take more than 10 minutes. We would also like to explore other models such as generative models, regression models, or nearest neighbor methods.
 
+\section{Conclusion}
+
 \section*{Acknowledgments}
 
-We would like to thank Igor Labutov and Thorsten Joachims for their advice and guidance on this work. We would also like to thank the entire CS4780 course staff, Cornell University and Govtrack. 
+We would like to thank Igor Labutov and Thorsten Joachims for their advice and guidance on this work. We would also like to thank the entire CS4780 course staff, Cornell University, GovTrack and the Python libraries: scikit-learn, scipy, numpy and pyYAML.
 
 \pagebreak
 
